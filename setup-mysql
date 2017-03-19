@@ -1,21 +1,47 @@
 #!/bin/bash
 
 # Install MariaDB
-
-  yum install -y mariadb-server mariadb
+    yum install -y mariadb-server mariadb
 
 # Start MariaDB
-
-  systemctl start mariadb.service
-  systemctl enable mariadb.service
+    systemctl start mariadb.service
+    systemctl enable mariadb.service
 
 # Secure MySQL
+  db_root_password=$(< /mnt/github/jnmitch/centos/passwords/mysql_root)
 
-  mysql_secure_installation
-  # - Set root password? [Y/n] y
-  #   - MySqL63
-  # - Remove anonymous users? [Y/n] y
-  # - Disallow root login remotely? [Y/n] y
-  # - Remove test database and access to it? [Y/n] y
-  # - Reload privilege tables now? [Y/n] y
+    mysql --user=root <<-EOF
+      UPDATE mysql.user SET Password=PASSWORD('$db_root_password') WHERE User='root';
+      DELETE FROM mysql.user WHERE User='';
+      DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+      DROP DATABASE IF EXISTS test;
+      DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+      FLUSH PRIVILEGES;
+EOF
+# do not indent
 
+  # Manual
+    # mysql_secure_installation
+    # - Set root password? [Y/n] y
+    #   - My!SqL!63
+    # - Remove anonymous users? [Y/n] y
+    # - Disallow root login remotely? [Y/n] y
+    # - Remove test database and access to it? [Y/n] y
+    # - Reload privilege tables now? [Y/n] y
+
+  # pre-encrypt root password, then pass in?
+    # python -c 'import crypt,getpass; print(crypt.crypt(getpass.getpass(), crypt.mksalt(crypt.METHOD_SHA512)))'
+    # Password:
+    
+    # db_root_password="${1}"
+    
+  # via inputs
+    # mysql_secure_installation <<-EOF
+    # y
+    # secret
+    # secret
+    # y
+    # y
+    # y
+    # y
+    # EOF

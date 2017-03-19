@@ -62,11 +62,11 @@ IPV6_PEERROUTES=yes" >> /etc/sysconfig/network-scripts/ifcfg-en*
     chmod +x /mnt/github/jnmitch/centos/setup-webmin
     bash /mnt/github/jnmitch/centos/setup-webmin
 
-# #################################################
-# # MariaDB (MySQL)                               #
-# #################################################
-#     chmod +x setup-mysql
-#     bash setup-mysql
+#################################################
+# MariaDB (MySQL)                               #
+#################################################
+    chmod +x /mnt/github/jnmitch/centos/setup-mysql
+    bash /mnt/github/jnmitch/centos/setup-mysql
 
 # #################################################
 # # Apache                                        #
