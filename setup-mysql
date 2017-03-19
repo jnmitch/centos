@@ -20,6 +20,10 @@
 EOF
 # do not indent
 
+##########################
+#    SCRAPS / DRAFTS     #
+##########################
+
   # Manual
     # mysql_secure_installation
     # - Set root password? [Y/n] y
