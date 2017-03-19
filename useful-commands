@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#################################################
+# Common / Useful Commands                      #
+#################################################
+
+# Get IP address
+    ip a
+
+# State of the network
+    nmcli d
+
+# List all files
+    ll
+
+# List all files incl. hidden
+    ls -Al
+
+# List IPtables
+    iptables -nL
+
+# Details of reserved ports
+    cat /etc/services
+
+# CentOS veresion
+    cat /etc/centos-release
+
+# Kernel version
+    uname -a
+
+# Removes Windows end of line / carriage return for a given file
+    sed -i 's/\r$//' /github/winfile
+
+# Login to MySQL via Command Line
+    mysql -u USERNAME -p
+
+# Display a list of databases
+    mysql> show databases;
+
+# Access a specific database,
+    mysql> use DBNAME;
+
+"[[ tail -n 10 /var/log/mongodb/mongod.log ]]
+[[ npm list --depth=0 ]]
+[[ npm list -g --depth=0 ]]"
