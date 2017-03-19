@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Set Firewall Variable
+    IPT="/sbin/iptables"
+    IP6T="/sbin/ip6tables"
+
+# Accept inbound TCP packets
+# sailsJS port
+    $IPT -A INPUT XX -p tcp -m state --state NEW --dport 1337 -j ACCEPT
+    $IP6T -A INPUT XX -p tcp -m state --state NEW --dport 1337 -j ACCEPT
+# nodeJS port
+    # $IPT -A INPUT XX -p tcp -m state --state NEW --dport 3001 -j ACCEPT
+    # $IP6T -A INPUT XX -p tcp -m state --state NEW --dport 3001 -j ACCEPT
+# postgres port
+    $IPT -A INPUT XX -p tcp -m state --state NEW --dport 5432 -j ACCEPT
+    $IP6T -A INPUT XX -p tcp -m state --state NEW --dport 5432 -j ACCEPT
+# mongoDB port
+    $IPT -A INPUT XX -p tcp -m state --state NEW --dport 27017 -j ACCEPT
+    $IP6T -A INPUT XX -p tcp -m state --state NEW --dport 27017 -j ACCEPT
+
+# Save and Restart IPtables
+    service iptables save
+    service ip6tables save
+    systemctl restart iptables
+    systemctl restart ip6tables
+
+# Create MongoDB Repo
+    echo "[mongodb-org-3.4]
+    name=MongoDB Repository
+    baseurl=https://repo.mongodb.org/yum/redhat/7Server/mongodb-org/3.4/x86_64/
+    gpgcheck=1
+    enabled=1
+    gpgkey=https://www.mongodb.org/static/pgp/server-3.4.asc" > /etc/yum.repos.d/mongodb-org-3.4.repo
+
+# Install MongoDB
+    yum install -y mongodb-org
+    service mongod start
+    chkconfig mongod on
+
+# Install NVM
+    bash <(curl -s https://raw.githubusercontent.com/creationix/nvm/v0.33.0/install.sh)
+    source /root/.nvm/nvm.sh
+    nvm install v7.5.0
+    nvm alias default 7.5.0
+
+# Install NPM Packages
+    npm install -g yo
+    npm install -g bower
+    npm install -g grunt-cli
+    npm install -g gulp
+    npm install -g node-gyp
+
+# Install MeanJS
+    git clone https://github.com/meanjs/mean.git meanjs
+    cd /meanjs
+    rm -rf node_modules/
+    npm cache clean
+    npm install
+    npm start

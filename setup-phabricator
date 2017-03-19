@@ -1,0 +1,18 @@
+#!/bin/bash
+
+    mkdir /var/www/html/phabricator
+    cd /var/www/html/phabricator
+
+    git clone https://github.com/phacility/libphutil.git
+    git clone https://github.com/phacility/arcanist.git
+    git clone https://github.com/phacility/phabricator.git
+
+    cd phabricator # !?!?!?!?
+
+    ./bin/config set mysql.host localhost
+    ./bin/config set mysql.host 3306
+    ./bin/config set mysql.user root
+    ./bin/config set mysql.pass MySqL63
+    ./bin/storage upgrade --user root --password MySqL63
+
+    systemctl restart mariadb

@@ -1,0 +1,72 @@
+#!/bin/bash
+
+# Disable firewalld
+    systemctl stop firewalld
+    systemctl disable firewalld
+    systemctl mask firewalld
+
+# Install IPtables
+    yum install -y iptables-services
+
+# Set Variables
+    IPT="/sbin/iptables"
+
+# Start IPtables
+    systemctl enable $IPT
+    systemctl start $IPT
+
+# Flush old rules, old custom tables
+    $IPT --flush
+    $IPT --delete-chain
+
+# Set default policies for all three default chains
+    $IPT -P INPUT DROP
+    $IPT -P FORWARD DROP
+    $IPT -P OUTPUT ACCEPT
+
+# Unknown
+    $IP6T -A INPUT -p ipv6-icmp -j ACCEPT
+
+# Enable free use of loopback interfaces
+    $IPT -A INPUT -i lo -j ACCEPT
+    $IPT -A OUTPUT -o lo -j ACCEPT
+
+# All TCP sessions should begin with SYN
+    # $IPT -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
+
+# Accept inbound TCP packets
+    # delete first line
+        # $IPT -D INPUT -j REJECT --reject-with icmp-host-prohibited
+    # established connections
+        $IPT -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    # apache port
+        $IPT -A INPUT -p tcp -m state --state NEW --dport 80 -j ACCEPT
+    # https port
+        # $IPT -A INPUT -p tcp -m state --state NEW --dport 443 -j ACCEPT
+    # dhcpv6-client
+        # $IP6T -A INPUT -d fe80::/64 -p udp -m udp --dport 546 -m state --state NEW -j ACCEPT
+    # sailsJS port
+        # $IPT -A INPUT -p tcp -m state --state NEW --dport 1337 -j ACCEPT
+    # ssh port (custom)
+        $IPT -A INPUT -p tcp -m state --state NEW --dport 2424 -j ACCEPT
+    # nodeJS port
+        # $IPT -A INPUT -p tcp -m state --state NEW --dport 3001 -j ACCEPT
+    # postgres port
+        # $IPT -A INPUT -p tcp -m state --state NEW --dport 5432 -j ACCEPT
+    # apache port (custom)
+        # $IPT -A INPUT -p tcp -m state --state NEW --dport 8088 -j ACCEPT
+    # webmin port
+        # $IPT -A INPUT -p tcp -m state --state NEW --dport 10000 -j ACCEPT
+    # mongoDB port
+        # $IPT -A INPUT -p tcp -m state --state NEW --dport 27017 -j ACCEPT
+    # webmin port (custom)
+        $IPT -A INPUT -p tcp -m state --state NEW --dport 50505 -j ACCEPT
+    # phppgadmin port (custom)
+        $IPT -A INPUT -p tcp -m state --state NEW --dport 60606 -j ACCEPT
+    # reject ICMP
+        $IPT -A INPUT -j REJECT --reject-with icmp-host-prohibited
+        $IPT -A FORWARD -j REJECT --reject-with icmp-host-prohibited
+
+# Save and Restart IPtables
+    service $IPT save # creates: /etc/sysconfig/iptables
+    systemctl restart $IPT

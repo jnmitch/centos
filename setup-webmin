@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Install EPEL Repo
+    yum --enablerepo=extras install -y epel-release
+
+# Create Webmin Repo
+    echo "[webmin]
+name=Webmin Distribution Neutral
+#baseurl=http://download.webmin.com/download/yum
+mirrorlist=http://download.webmin.com/download/yum/mirrorlist
+enabled=1" > /etc/yum.repos.d/webmin.repo
+
+# Install Webmin
+    cd /tmp
+    rpm --import http://www.webmin.com/jcameron-key.asc
+    cd /
+    yum check-update
+    yum install -y webmin perl-Socket6
+
+# Change Webmin Port
+    # delete first line
+        # sed -i '1d' /etc/webmin/miniserv.conf
+    # add port to first line
+        # sed -i '1s/^/port=50505\n/' /etc/webmin/miniserv.conf
+        sed -i -e 's@^port=10000@port=50505@' /etc/webmin/miniserv.conf
+    # delete 22nd line
+        # sed -i '22d' /etc/webmin/miniserv.conf
+    # add listen to 22nd line
+        # sed -i '22s/^/listen=50505\n/' /etc/webmin/miniserv.conf
+        sed -i -e 's@^listen=10000@listen=50505@' /etc/webmin/miniserv.conf
+
+# Start Webmin
+    chkconfig webmin on
+    systemctl start webmin

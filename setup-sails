@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Install NodeMon
+# https://github.com/remy/nodemon
+    # npm install -g -y nodemon
+
+# Install SailsJS
+    npm install -g sails
+
+# Create App Project Directory
+    mkdir apps
+
+# Create New Sails App
+    cd /apps
+    sails new soarSPA
+    cd soarSPA
+    npm install
+
+# Generate a REST API
+# This will create two files: a model and a controller
+    sails generate api user
+
+# Start App Server (via NodeMon)
+    # cd apps/soarSpa
+    # nodemon app.js
+
+# Start App Server (via Sails)
+    sails lift

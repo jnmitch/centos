@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# PHPPGADMIN
+
+# Install phpPgAdmin
+    yum install httpd phpPgAdmin -y
+
+# Edit phpPgAdmin Configuration
+    nano /etc/httpd/conf.d/phpPgAdmin.conf
+
+# Make the changes as shown below:
+
+Alias /phpPgAdmin /usr/share/phpPgAdmin # <============
+
+<Location /phpPgAdmin>
+    <IfModule mod_authz_core.c>
+        # Apache 2.4
+        Require all granted # <============
+        # Require host example.com
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        # Apache 2.2
+        Order deny,allow
+        Allow from all # <============
+        # Allow from .example.com
+    </IfModule>
+</Location>
+
+# Start or Restart Apache service:
+    systemctl enable httpd
+    systemctl start httpd
+
+# Edit Configuration
+    nano /etc/phpPgAdmin/config.inc.php
+
+# Find the following lines:
+    $conf['servers'][0]['host'] = '';
+    $conf['servers'][0]['host'] = 'localhost'; # <============
+
+    $conf['extra_login_security'] = true;
+    $conf['extra_login_security'] = false; # <============
+
+    $conf['owned_only'] = false;
+    $conf['owned_only'] = true; # <============
+
+# Save and close the file. Restart postgresql service and Apache services.
+    systemctl restart postgresql-9.6
+    systemctl restart httpd

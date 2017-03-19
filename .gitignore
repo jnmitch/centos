@@ -117,6 +117,9 @@ coverage
 # VM server setup file
 setup-manual
 
+#VS Code settings
+.vscode
+
 ################################################
 # Heroku environment
 ################################################

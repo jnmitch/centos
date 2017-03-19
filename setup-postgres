@@ -1,0 +1,58 @@
+#!/bin/bash
+
+# POSTGRES 9.6
+
+# Edit [base] and [updates] sections:
+    nano /etc/yum.repos.d/CentOS-Base.repo
+
+# To the section(s) identified above, you need to append the following line 
+# (otherwise dependencies might resolve to the postgresql supplied by the CentOS repositories):
+    exclude=postgresql*
+    yum update
+
+# Install Postgres
+    rpm -Uvh https://yum.postgresql.org/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
+
+# yum list postgresql*
+    yum install -y postgresql96-server postgresql96-contrib
+    /usr/pgsql-9.6/bin/postgresql96-setup initdb
+
+# By default, PostgreSQL does not allow password authentication. 
+# We will change that by editing its host-based authentication (HBA) configuration.
+# Open the HBA configuration with your favorite text editor. We will use vi:
+    nano /var/lib/pgsql/9.6/data/pg_hba.conf
+
+# Find the lines that looks like this, near the bottom of the file:
+# pg_hba.conf excerpt (original)
+    host    all             all             127.0.0.1/32            ident
+    host    all             all             ::1/128                 ident
+
+# Then replace "ident" with "md5", so they look like this:
+# pg_hba.conf excerpt (updated)
+    host    all             all             127.0.0.1/32            md5 # IP4 localhost
+    host    all             all             24.11.8.74/32           md5 # kensington
+    host    all             all             167.88.112.38/32        md5 # soa.report
+    host    all             all             ::1/128                 md5 # IP6 localhost
+
+# Save and exit. PostgreSQL is now configured to allow password authentication.
+
+# Edit Postgres configuration
+    nano /var/lib/pgsql/9.6/data/postgresql.conf
+
+# Find the lines:
+    #listen_addresses = 'localhost'
+    #port = 5432
+
+# Uncomment both lines, and set the IP address of your postgresql server or set ‘*’ to listen from all clients:
+    listen_addresses = '*'
+    port = 5432
+
+# Create data directory
+    mkdir /var/lib/pgsql/data/
+    cd /var/lib/pgsql/data/
+    ln -s /var/lib/pgsql/9.6/data/postgresql.conf
+    ln -s /var/lib/pgsql/9.6/data/pg_hba.conf
+
+# Start Postgres
+    systemctl enable postgresql-9.6
+    systemctl start postgresql-9.6
