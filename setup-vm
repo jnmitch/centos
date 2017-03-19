@@ -53,14 +53,12 @@ IPV6_PEERROUTES=yes" >> /etc/sysconfig/network-scripts/ifcfg-en*
 #################################################
 # Firewall                                      #
 #################################################
-    # sed -i 's/\r$//' /mnt/github/jnmitch/centos-7/setup-firewall
     chmod +x /mnt/github/jnmitch/centos/setup-firewall
     bash /mnt/github/jnmitch/centos/setup-firewall
 
 #################################################
 # Webmin                                        #
 #################################################
-    # sed -i 's/\r$//' /mnt/github/jnmitch/centos-7/setup-webmin
     chmod +x /mnt/github/jnmitch/centos/setup-webmin
     bash /mnt/github/jnmitch/centos/setup-webmin
 
