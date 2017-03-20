@@ -1,11 +1,14 @@
 #!/bin/bash
 
+SETUPFILES="/mnt/github/jnmitch/centos/setup-files"
+LOCALFILES="/mnt/github/jnmitch/centos/local-files"
+
 #################################################
 # Shared Folders                                #
 #################################################
 
 # Auto-mount shared folders on startup
-    echo "/Github               /mnt/github             vboxsf  defaults        0 0" >> /etc/fstab
+    cat $LOCALFILES/settings-mount_local_folders >> /etc/fstab
 
 #################################################
 # Time                                          #
@@ -24,10 +27,7 @@
 #################################################
 
 # Network settings
-    echo "PEERDNS=yes
-PEERROUTES=yes
-IPV6_PEERDNS=yes
-IPV6_PEERROUTES=yes" >> /etc/sysconfig/network-scripts/ifcfg-en*
+    cat $LOCALFILES/settings-network >> /etc/sysconfig/network-scripts/ifcfg-en*
 
 # Set hostname
     # echo "Please set the hostname (machineName machineName.domainName.ext): "

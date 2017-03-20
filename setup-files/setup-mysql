@@ -8,7 +8,8 @@
     systemctl enable mariadb.service
 
 # Secure MySQL
-  db_root_password=$(< /mnt/github/jnmitch/centos/passwords/mysql_root)
+  # OLD: db_root_password=$(< /mnt/github/jnmitch/centos/localfiles/password-mysql_root)
+  db_root_password=$(< $LOCALFILES/password-mysql_root)
 
     mysql --user=root <<-EOF
       UPDATE mysql.user SET Password=PASSWORD('$db_root_password') WHERE User='root';
@@ -18,7 +19,7 @@
       DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
       FLUSH PRIVILEGES;
 EOF
-# do not indent
+# ^ do not indent
 
 ##########################
 #    SCRAPS / DRAFTS     #
