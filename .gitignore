@@ -116,7 +116,8 @@ coverage
 
 # VM server setup file
 setup-manual
-passwords
+setup-test
+local-files
 
 #VS Code settings
 .vscode
