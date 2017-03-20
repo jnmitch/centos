@@ -1,78 +1,54 @@
 #!/bin/bash
 
-SETUPFILES="/mnt/github/jnmitch/centos/setup-files"
-LOCALFILES="/mnt/github/jnmitch/centos/local-files"
+#################################################
+# Set Shell Variables                           #
+#################################################
+    SETUPFILES="/mnt/github/jnmitch/centos/setup-files"
+    LOCALFILES="/mnt/github/jnmitch/centos/local-files"
 
 #################################################
-# Shared Folders                                #
+# Local Shared Folders                          #
 #################################################
-
-# Auto-mount shared folders on startup
+# Auto-mount local shared folders on startup
     cat $LOCALFILES/settings-mount_local_folders >> /etc/fstab
 
 #################################################
 # Time                                          #
 #################################################
-
-# Timezone
-    # timedatectl set-timezone America/Denver
-
 # Time synchronization
     yum install -y ntp
     systemctl start ntpd
     systemctl enable ntpd
 
 #################################################
-# Networking                                    #
+# Network                                       #
 #################################################
-
-# Network settings
-    cat $LOCALFILES/settings-network >> /etc/sysconfig/network-scripts/ifcfg-en*
-
-# Set hostname
-    # echo "Please set the hostname (machineName machineName.domainName.ext): "
-    # read input_hostname
-    # echo "HOSTNAME=\"$input_hostname\"" >> /etc/sysconfig/network
-    HOSTY=$(hostname) # during boot, CentOS will load /etc/hostname contents in kernel's hostname setting. Absent /etc/hostname, it will get name from /etc/sysconfig/network
-
-# Get machine IP address
-    IPADDY=$(hostname -I | cut -d" " -f 1)
-
-# Add IP & hostname
-    sed -i '1i\'"$IPADDY   $HOSTY" /etc/hosts
-    systemctl restart network
-
-# Set network for static IP
-    # DNS1="172.16.1.21"
-    # DOMAIN="2factor.net"
-    # IPADDR="172.16.1.25"
-    # PREFIX="24"
-    # GATEWAY="172.16.1.254"
-    # IPV6_PRIVACY="no"
+    chmod +x $SETUPFILES/setup-network
+    bash $SETUPFILES/setup-network
 
 #################################################
 # Firewall                                      #
 #################################################
-    chmod +x /mnt/github/jnmitch/centos/setup-firewall
-    bash /mnt/github/jnmitch/centos/setup-firewall
+    chmod +x $SETUPFILES/setup-firewall
+    bash $SETUPFILES/setup-firewall
 
 #################################################
 # Webmin                                        #
 #################################################
-    chmod +x /mnt/github/jnmitch/centos/setup-webmin
-    bash /mnt/github/jnmitch/centos/setup-webmin
+    chmod +x $SETUPFILES/setup-webmin
+    bash $SETUPFILES/setup-webmin
 
 #################################################
 # MariaDB (MySQL)                               #
 #################################################
-    chmod +x /mnt/github/jnmitch/centos/setup-mysql
-    bash /mnt/github/jnmitch/centos/setup-mysql
+    chmod +x $SETUPFILES/setup-mysql
+    bash $SETUPFILES/setup-mysql
 
-# #################################################
-# # Apache                                        #
-# #################################################
-#     chmod +x setup-apache
-#     bash setup-apache
+#################################################
+# Apache                                        #
+#################################################
+    chmod +x $SETUPFILES/setup-apache
+    bash $SETUPFILES/setup-apache
 
 # #################################################
 # # PHP                                           #
@@ -85,6 +61,6 @@ LOCALFILES="/mnt/github/jnmitch/centos/local-files"
 # #################################################
 # # Phabricator                                   #
 # #################################################
-#     chmod +x setup-phabricator
-#     bash setup-phabricator
+#     chmod +x $SETUPFILES/setup-phabricator
+#     bash $SETUPFILES/setup-phabricator
 #
