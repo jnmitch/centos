@@ -51,10 +51,11 @@
     bash $SETUPFILES/setup-php
 
 #################################################
-# PHP                                           #
+# phpMyAdmin                                    #
 #################################################
-    chmod +x $SETUPFILES/setup-php
-    bash $SETUPFILES/setup-php   
+    chmod +x $SETUPFILES/setup-phpmyadmin
+    bash $SETUPFILES/setup-phpmyadmin
+
 #################################################
 # Apache                                        #
 #################################################

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+    yum install -y phpmyadmin
+
+    PMA="/etc/httpd/conf.d/phpMyAdmin.conf"
+
+# Modify settings
+    cp $PMA /etc/httpd/conf.d/phpMyAdmin.conf.orig
+
+    sed -i "s|Require ip 127.0.0.1|# Require ip 127.0.0.1|" $PMA
+    sed -i "s|Require ip ::1|# Require ip ::1|g" $PMA
+
+    sed -i "s|Allow from 127.0.0.1|# Allow from 127.0.0.1|" $PMA
+    sed -i "s|Allow from ::1|# Allow from ::1|" $PMA
+    
+    sed -i '0,/<\/RequireAny>/s/<\/RequireAny>/\t Require all granted\n     &/' $PMA
+    sed -i "s|Deny from All|# Deny from All|g" $PMA
+    
+    systemctl restart httpd
