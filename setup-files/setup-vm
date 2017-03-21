@@ -45,16 +45,21 @@
     bash $SETUPFILES/setup-mysql
 
 #################################################
-# Apache                                        #
+# PHP                                           #
 #################################################
-    chmod +x $SETUPFILES/setup-apache
-    bash $SETUPFILES/setup-apache
+    chmod +x $SETUPFILES/setup-php
+    bash $SETUPFILES/setup-php
 
 #################################################
 # PHP                                           #
 #################################################
     chmod +x $SETUPFILES/setup-php
     bash $SETUPFILES/setup-php   
+#################################################
+# Apache                                        #
+#################################################
+    chmod +x $SETUPFILES/setup-apache
+    bash $SETUPFILES/setup-apache
 
 # #################################################
 # # Phabricator                                   #
