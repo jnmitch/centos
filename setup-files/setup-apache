@@ -16,7 +16,7 @@
     sed -i "s|Options Indexes FollowSymLinks|Options FollowSymLinks|" /etc/httpd/conf/httpd.conf
 
 # Add virtual hosts
-    cat $LOCALFILES/settings-apache_virtualhosts >> /etc/httpd/conf/vhosts.conf
+    cat $LOCALFILES/apache-vhost >> /etc/httpd/conf/vhosts.conf
 
 # FOR TESTING
     # mkdir -p /var/www/html/example.com/{public_html,logs}

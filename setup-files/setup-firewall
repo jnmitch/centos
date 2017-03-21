@@ -54,9 +54,7 @@
     # postgres port
         # $IPT -A INPUT -p tcp -m state --state NEW --dport 5432 -j ACCEPT
     # apache port (custom)
-        # $IPT -A INPUT -p tcp -m state --state NEW --dport 8088 -j ACCEPT
-    # webmin port
-        # $IPT -A INPUT -p tcp -m state --state NEW --dport 10000 -j ACCEPT
+        $IPT -A INPUT -p tcp -m state --state NEW --dport 8088 -j ACCEPT
     # mongoDB port
         # $IPT -A INPUT -p tcp -m state --state NEW --dport 27017 -j ACCEPT
     # webmin port (custom)
