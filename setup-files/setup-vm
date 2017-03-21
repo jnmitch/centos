@@ -51,10 +51,10 @@
     bash $SETUPFILES/setup-apache
 
 #################################################
-# PHP 5.4.16 (for Phabricator)                  #
+# PHP                                           #
 #################################################
-
-    yum install -y php php-cli php-common php-gd php-mbstring php-mysql php-apc php-process
+    chmod +x $SETUPFILES/setup-php
+    bash $SETUPFILES/setup-php   
 
 # #################################################
 # # Phabricator                                   #
@@ -62,3 +62,5 @@
 #     chmod +x $SETUPFILES/setup-phabricator
 #     bash $SETUPFILES/setup-phabricator
 #
+
+reboot
