@@ -1,21 +1,25 @@
 #!/bin/bash
 
+# Install Apache
     yum install -y httpd
-
     systemctl start httpd.service
     systemctl enable httpd.service
 
 # Modify the default configuration in order to enhance security:
     cp /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.orig
     # sed -i 's|^|#&|g' /etc/httpd/conf.d/welcome.conf # hides welcome page
-    
+
+# Backup original file
     cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.orig
+
+# Modify settings
     sed -i "s|Options Indexes FollowSymLinks|Options FollowSymLinks|" /etc/httpd/conf/httpd.conf
 
 # Add virtual hosts
     cat $LOCALFILES/settings-apache_virtualhosts >> /etc/httpd/conf/vhosts.conf
 
-    # FOR TESTING
+# FOR TESTING
     # mkdir -p /var/www/html/example.com/{public_html,logs}
 
+# Restart Apache after modifying
     systemctl restart httpd
