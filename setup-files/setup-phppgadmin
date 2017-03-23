@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# PHPPGADMIN
-
 # Install phpPgAdmin
     yum install httpd phpPgAdmin -y
 

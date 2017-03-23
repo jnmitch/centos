@@ -40,7 +40,7 @@
     bash $SETUPFILES/setup-webmin
 
 #################################################
-# MariaDB (MySQL)                               #
+# MySQL (MariaDB)                               #
 #################################################
     chmod +x $SETUPFILES/setup-mysql
     bash $SETUPFILES/setup-mysql

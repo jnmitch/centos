@@ -8,11 +8,10 @@
     mkdir $PHAB
     cd $PHAB
 
-    git clone https://github.com/phacility/libphutil.git
     git clone https://github.com/phacility/arcanist.git
+    git clone https://github.com/phacility/libphutil.git
     git clone https://github.com/phacility/phabricator.git
 
-    cd phabricator # !?!?!?!?
 
     ./bin/config set mysql.host localhost
     ./bin/config set mysql.host 3306

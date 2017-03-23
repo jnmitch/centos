@@ -1,9 +1,10 @@
 #!/bin/bash
 
-    yum install -y phpmyadmin
-
 # Set variable
     PMA="/etc/httpd/conf.d/phpMyAdmin.conf"
+
+# Install phpMyAdmin
+    yum install -y phpmyadmin
 
 # Modify settings
     cp $PMA $PMA.orig
