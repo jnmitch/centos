@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Network settings
+    cat $LOCALFILES/settings-network >> /etc/sysconfig/network-scripts/ifcfg-en*
+
+# Install network tools
+    yum install -y lsof nmap
+
+# Set hostname variable
+    # OLD: echo "Please set the hostname (machineName machineName.domainName.ext): "
+    # OLD: read input_hostname
+    # OLD: echo "HOSTNAME=\"$input_hostname\"" >> /etc/sysconfig/network
+    HOSTY=$(hostname) # during boot, CentOS will load /etc/hostname contents in kernel's hostname setting. Absent /etc/hostname, it will get name from /etc/sysconfig/network
+
+# Set IP address variable
+    IPADDY=$(hostname -I | cut -d" " -f 1)
+
+# Insert IP & hostname
+    sed -i '1i\'"$IPADDY   $HOSTY" /etc/hosts
+    systemctl restart network
+
+# TO DO: set network for static IP
+    # DNS1="172.16.1.21"
+    # DOMAIN="2factor.net"
+    # IPADDR="172.16.1.25"
+    # PREFIX="24"
+    # GATEWAY="172.16.1.254"
+    # IPV6_PRIVACY="no"
+
+# Unset variables
+    unset HOSTY
+    unset IPADDY

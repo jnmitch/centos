@@ -1,4 +1,9 @@
 #!/bin/bash
+    cd /
+
+# Set variables
+    IPT="iptables"
+    # IP6T="ip6tables"
 
 # Disable firewalld
     systemctl stop firewalld
@@ -6,10 +11,7 @@
     systemctl mask firewalld
 
 # Install IPtables
-    yum install -y iptables-services
-
-# Set Variables
-    IPT="/sbin/iptables"
+   yum install -y iptables-services
 
 # Start IPtables
     systemctl enable $IPT
@@ -25,7 +27,7 @@
     $IPT -P OUTPUT ACCEPT
 
 # Unknown
-    $IP6T -A INPUT -p ipv6-icmp -j ACCEPT
+    # $IP6T -A INPUT -p ipv6-icmp -j ACCEPT
 
 # Enable free use of loopback interfaces
     $IPT -A INPUT -i lo -j ACCEPT
@@ -35,8 +37,6 @@
     # $IPT -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
 
 # Accept inbound TCP packets
-    # delete first line
-        # $IPT -D INPUT -j REJECT --reject-with icmp-host-prohibited
     # established connections
         $IPT -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
     # apache port
@@ -51,12 +51,12 @@
         $IPT -A INPUT -p tcp -m state --state NEW --dport 2424 -j ACCEPT
     # nodeJS port
         # $IPT -A INPUT -p tcp -m state --state NEW --dport 3001 -j ACCEPT
+    # mysql port
+        $IPT -A INPUT -p tcp -m state --state NEW --dport 3306 -j ACCEPT
     # postgres port
         # $IPT -A INPUT -p tcp -m state --state NEW --dport 5432 -j ACCEPT
-    # apache port (custom)
-        # $IPT -A INPUT -p tcp -m state --state NEW --dport 8088 -j ACCEPT
-    # webmin port
-        # $IPT -A INPUT -p tcp -m state --state NEW --dport 10000 -j ACCEPT
+    # phabricator port (custom)
+        $IPT -A INPUT -p tcp -m state --state NEW --dport 8088 -j ACCEPT
     # mongoDB port
         # $IPT -A INPUT -p tcp -m state --state NEW --dport 27017 -j ACCEPT
     # webmin port (custom)
@@ -70,3 +70,8 @@
 # Save and Restart IPtables
     service $IPT save # creates: /etc/sysconfig/iptables
     systemctl restart $IPT
+
+# Unset variable
+    unset IPT
+    # unset IP6T
+

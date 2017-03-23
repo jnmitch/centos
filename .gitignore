@@ -114,9 +114,10 @@ coverage
 # nyc test coverage
 .nyc_output
 
-# VM server setup file
-setup-manual
-passwords
+# VM server setup files
+setup-files/setup-manual
+setup-files/setup-test*
+local-files
 
 #VS Code settings
 .vscode

@@ -40,6 +40,10 @@
 # Access a specific database,
     mysql> use DBNAME;
 
+# Open/listening ports
+    lsof -i -P -n | grep LISTEN
+    nmap -sT -O localhost ( or 0.0.0.0 )
+
 "[[ tail -n 10 /var/log/mongodb/mongod.log ]]
 [[ npm list --depth=0 ]]
 [[ npm list -g --depth=0 ]]"

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Set variable
+    export APACHE="/etc/httpd/conf/httpd.conf"
+
+# Install Apache
+    yum install -y httpd
+    systemctl start httpd.service
+    systemctl enable httpd.service
+
+# Modify the default configuration in order to enhance security:
+    cp /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.orig
+    # sed -i 's|^|#&|g' /etc/httpd/conf.d/welcome.conf # hides welcome page
+
+# Backup original file
+    cp $APACHE $APACHE.orig
+
+# Modify settings
+    sed -i "s|Options Indexes FollowSymLinks|Options FollowSymLinks|" $APACHE # line 144
+
+# Add virtual hosts
+    cat $LOCALFILES/apache-vhosts >> /etc/httpd/conf.d/vhosts.conf
+
+# FOR TESTING
+    # mkdir -p /var/www/html/example.com/{public_html,logs}
+
+# Restart Apache after modifying
+    # systemctl restart httpd # (restarting in phpmyadmin script)

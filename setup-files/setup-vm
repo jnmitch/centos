@@ -1,0 +1,78 @@
+#!/bin/bash
+
+#################################################
+# Set Variables                                 #
+#################################################
+    SETUPFILES="/mnt/github/jnmitch/centos/setup-files"
+    export LOCALFILES="/mnt/github/jnmitch/centos/local-files"
+    export DB_ROOT_PWD=$(< $LOCALFILES/password-mysql_root)
+
+#################################################
+# System                                        #
+#################################################
+    chmod +x $SETUPFILES/setup-system
+    bash $SETUPFILES/setup-system
+
+#################################################
+# Network                                       #
+#################################################
+    chmod +x $SETUPFILES/setup-network
+    bash $SETUPFILES/setup-network
+
+#################################################
+# Firewall                                      #
+#################################################
+    chmod +x $SETUPFILES/setup-firewall
+    bash $SETUPFILES/setup-firewall
+
+#################################################
+# Webmin                                        #
+#################################################
+    chmod +x $SETUPFILES/setup-webmin
+    bash $SETUPFILES/setup-webmin
+
+#################################################
+# MySQL (MariaDB)                               #
+#################################################
+    chmod +x $SETUPFILES/setup-mysql
+    bash $SETUPFILES/setup-mysql
+
+#################################################
+# PHP                                           #
+#################################################
+    chmod +x $SETUPFILES/setup-php
+    bash $SETUPFILES/setup-php
+
+#################################################
+# Apache                                        #
+#################################################
+    chmod +x $SETUPFILES/setup-apache
+    bash $SETUPFILES/setup-apache
+
+#################################################
+# phpMyAdmin                                    #
+#################################################
+    chmod +x $SETUPFILES/setup-phpmyadmin
+    bash $SETUPFILES/setup-phpmyadmin
+
+# #################################################
+# # phpPgAdmin                                    #
+# #################################################
+#     chmod +x $SETUPFILES/setup-phppgadmin
+#     bash $SETUPFILES/setup-phppgadmin
+
+#################################################
+# Phabricator                                   #
+#################################################
+    chmod +x $SETUPFILES/setup-phabricator
+    bash $SETUPFILES/setup-phabricator
+
+#################################################
+# Unset Variables                               #
+#################################################
+    unset SETUPFILES
+    unset LOCALFILES
+    unset APACHE
+    unset DB_ROOT_PWD
+
+reboot

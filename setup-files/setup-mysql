@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Install MariaDB
+    yum install -y mariadb-server mariadb
+
+# Start MariaDB
+    systemctl start mariadb
+    systemctl enable mariadb
+
+# Secure MySQL
+    mysql --user=root <<-EOF
+      UPDATE mysql.user SET Password=PASSWORD('$DB_ROOT_PWD') WHERE User='root';
+      DELETE FROM mysql.user WHERE User='';
+      /* DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1'); */
+      DROP DATABASE IF EXISTS test;
+      DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+      FLUSH PRIVILEGES;
+EOF
+# ^ do not indent
