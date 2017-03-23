@@ -62,14 +62,11 @@
 #     bash $SETUPFILES/setup-phppgadmin
 
 #################################################
+# Phabricator                                   #
 #################################################
+    chmod +x $SETUPFILES/setup-phabricator
+    bash $SETUPFILES/setup-phabricator
 
-# #################################################
-# # Phabricator                                   #
-# #################################################
-#     chmod +x $SETUPFILES/setup-phabricator
-#     bash $SETUPFILES/setup-phabricator
-#
 #################################################
 # Unset Variables                               #
 #################################################

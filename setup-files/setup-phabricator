@@ -12,12 +12,49 @@
     git clone https://github.com/phacility/libphutil.git
     git clone https://github.com/phacility/phabricator.git
 
+    cd /
+    chown -R apache:apache $PHAB
+
+# Setup virtual host
+    cat $LOCALFILES/apache-vhost_phabricator >> /etc/httpd/conf.d/vhosts.conf
+
+# Modify Apache settings
+    # sed -i "/Listen \*:80/a Listen \*:8080" $APACHE # line 42
+
+# Restart the Apache service
+    systemctl restart httpd
+
+# Create Phabricator database user
+    mysql --user=root --password=$DB_ROOT_PWD <<-EOF
+    CREATE USER 'phabricator'@'localhost' IDENTIFIED BY '$DB_PHAB_PWD';
+    GRANT ALL PRIVILEGES ON *.* TO 'phabricator'@'localhost';
+    FLUSH PRIVILEGES;
+EOF
+
+# Setup the MariaDB credentials
+    cd $PHAB/phabricator
 
     ./bin/config set mysql.host localhost
-    ./bin/config set mysql.host 3306
-    ./bin/config set mysql.user root
-    ./bin/config set mysql.pass MySqL63
-    ./bin/storage upgrade --user root --password MySqL63
+    ./bin/config set mysql.port 3306
+    ./bin/config set mysql.user phabricator
+    ./bin/config set mysql.pass $DB_PHAB_PWD
+
+# Run the storage upgrade script and load the database schema
+    ./bin/storage upgrade --force
+
+# Restart database
+    systemctl restart mariadb
+
+# Start Phabricator daemon so that it can do the required background tasks
+    ./bin/phd start
+
+# Configure the Base URI using the following command. It is important to configure the Base URI 
+# as most of the features in the application will be unavailable unless Base URI is configured
+    ./bin/config set phabricator.base-uri 'https://yourdomain.com'
+
+# Set the local repository path
+    mkdir /var/www/html/github
+    chown -R apache:apache /var/www/html/github
 
 # Unset variable
     unset PHAB
