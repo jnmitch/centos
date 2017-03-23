@@ -3,6 +3,9 @@
 # Network settings
     cat $LOCALFILES/settings-network >> /etc/sysconfig/network-scripts/ifcfg-en*
 
+# Install network tools
+    yum install -y lsof nmap
+
 # Set hostname variable
     # OLD: echo "Please set the hostname (machineName machineName.domainName.ext): "
     # OLD: read input_hostname
