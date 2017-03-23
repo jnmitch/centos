@@ -5,6 +5,7 @@
 #################################################
     SETUPFILES="/mnt/github/jnmitch/centos/setup-files"
     export LOCALFILES="/mnt/github/jnmitch/centos/local-files"
+    export SERVICEFILES="/mnt/github/jnmitch/centos/service-files"
     export DB_ROOT_PWD=$(< $LOCALFILES/password-mysql_root)
 
 #################################################
@@ -72,6 +73,7 @@
 #################################################
     unset SETUPFILES
     unset LOCALFILES
+    unset SERVICEFILES
     unset APACHE
     unset DB_ROOT_PWD
 

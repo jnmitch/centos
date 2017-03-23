@@ -1,0 +1,16 @@
+[Unit]
+Description=Phabricator PHD daemon
+After=network.target mariadb.service
+# php-fpm.service 
+
+[Service]
+User=apache
+Group=apache
+Type=oneshot
+Environment="PATH=/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=${PHAB}/phabricator/bin/phd start
+ExecStop=${PHAB}/phabricator/bin/phd stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
