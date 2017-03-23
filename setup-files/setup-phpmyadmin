@@ -6,16 +6,25 @@
     PMA="/etc/httpd/conf.d/phpMyAdmin.conf"
 
 # Modify settings
-    cp $PMA /etc/httpd/conf.d/phpMyAdmin.conf.orig
+    cp $PMA $PMA.orig
 
-    sed -i "s|Require ip 127.0.0.1|# Require ip 127.0.0.1|" $PMA
-    sed -i "s|Require ip ::1|# Require ip ::1|g" $PMA
+    sed -i "0,/Require ip 127.0.0.1/s//# Require ip 127.0.0.1/" $PMA # replace only the first occurance
+    sed -i "0,/Require ip ::1/s//# Require ip ::1|g" $PMA # replace only the first occurance
+    sed -i "0,/<\/RequireAny>/s/<\/RequireAny>/\t Require all granted\n     &/" $PMA # replace only the first occurance
 
-    sed -i "s|Allow from 127.0.0.1|# Allow from 127.0.0.1|" $PMA
-    sed -i "s|Allow from ::1|# Allow from ::1|" $PMA
-    
-    sed -i '0,/<\/RequireAny>/s/<\/RequireAny>/\t Require all granted\n     &/' $PMA
-    sed -i "s|Deny from All|# Deny from All|g" $PMA
-    
-    systemctl restart httpd# Unset variable
+    # sed -i "s|Allow from 127.0.0.1|# Allow from 127.0.0.1|" $PMA
+    # sed -i "s|Allow from ::1|# Allow from ::1|" $PMA
+    # sed -i "/<\/RequireAny>/s/<\/RequireAny>/\t Require all granted\n     &/" $PMA
+    # sed -i "s|Deny from All|# Deny from All|g" $PMA
+
+# Modify Apache settings
+    sed -i "/Listen \*:80/a Listen \*:60606" $APACHE # line 42
+
+# Setup virtual host
+    cat $LOCALFILES/apache-vhost_phpmyadmin >> /etc/httpd/conf.d/vhosts.conf
+
+# Restart Apache after modifying    
+    systemctl restart httpd
+
+# Unset variable
     unset PMA

@@ -1,11 +1,12 @@
 #!/bin/bash
 
-    mkdir /var/www/html/phabricator
-    cd /var/www/html/phabricator
 # Set variable
     PHAB="/var/www/html/phacility"
     DB_PHAB_PWD=$(< $LOCALFILES/password-mysql_phabricator)
 
+# Download Phabricator
+    mkdir $PHAB
+    cd $PHAB
 
     git clone https://github.com/phacility/libphutil.git
     git clone https://github.com/phacility/arcanist.git
@@ -19,6 +20,6 @@
     ./bin/config set mysql.pass MySqL63
     ./bin/storage upgrade --user root --password MySqL63
 
-    systemctl restart mariadb# Unset variable
+# Unset variable
     unset PHAB
     unset DB_PHAB_PWD
