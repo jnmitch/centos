@@ -52,16 +52,19 @@
     bash $SETUPFILES/setup-php
 
 #################################################
+# Apache                                        #
+#################################################
+    chmod +x $SETUPFILES/setup-apache
+    bash $SETUPFILES/setup-apache
+
+#################################################
 # phpMyAdmin                                    #
 #################################################
     chmod +x $SETUPFILES/setup-phpmyadmin
     bash $SETUPFILES/setup-phpmyadmin
 
 #################################################
-# Apache                                        #
 #################################################
-    chmod +x $SETUPFILES/setup-apache
-    bash $SETUPFILES/setup-apache
 
 # #################################################
 # # Phabricator                                   #
