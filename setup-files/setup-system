@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Auto-mount local shared folders on startup
+    cat $LOCALFILES/settings-mount_local_folders >> /etc/fstab
+
+# SELinux management tools
+    yum install -y policycoreutils-python # for 'semanage permissive'
+
+# Set timezone
+    timedatectl set-timezone America/Denver
+
+# Time synchronization
+    yum install -y ntp
+    systemctl start ntpd
+    systemctl enable ntpd

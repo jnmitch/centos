@@ -8,18 +8,10 @@
     export DB_ROOT_PWD=$(< $LOCALFILES/password-mysql_root)
 
 #################################################
-# Local Shared Folders                          #
+# System                                        #
 #################################################
-# Auto-mount local shared folders on startup
-    cat $LOCALFILES/settings-mount_local_folders >> /etc/fstab
-
-#################################################
-# Time                                          #
-#################################################
-# Time synchronization
-    yum install -y ntp
-    systemctl start ntpd
-    systemctl enable ntpd
+    chmod +x $SETUPFILES/setup-system
+    bash $SETUPFILES/setup-system
 
 #################################################
 # Network                                       #
