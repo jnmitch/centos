@@ -4,8 +4,8 @@
     yum install -y mariadb-server mariadb
 
 # Start MariaDB
-    systemctl start mariadb.service
-    systemctl enable mariadb.service
+    systemctl start mariadb
+    systemctl enable mariadb
 
 # Secure MySQL
     mysql --user=root <<-EOF
