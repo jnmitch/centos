@@ -55,6 +55,12 @@
     chmod +x $SETUPFILES/setup-phpmyadmin
     bash $SETUPFILES/setup-phpmyadmin
 
+# #################################################
+# # phpPgAdmin                                    #
+# #################################################
+#     chmod +x $SETUPFILES/setup-phppgadmin
+#     bash $SETUPFILES/setup-phppgadmin
+
 #################################################
 #################################################
 
