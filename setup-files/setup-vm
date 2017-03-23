@@ -1,10 +1,11 @@
 #!/bin/bash
 
 #################################################
-# Set Shell Variables                           #
+# Set Variables                                 #
 #################################################
     SETUPFILES="/mnt/github/jnmitch/centos/setup-files"
-    LOCALFILES="/mnt/github/jnmitch/centos/local-files"
+    export LOCALFILES="/mnt/github/jnmitch/centos/local-files"
+    export DB_ROOT_PWD=$(< $LOCALFILES/password-mysql_root)
 
 #################################################
 # Local Shared Folders                          #
@@ -68,5 +69,12 @@
 #     chmod +x $SETUPFILES/setup-phabricator
 #     bash $SETUPFILES/setup-phabricator
 #
+#################################################
+# Unset Variables                               #
+#################################################
+    unset SETUPFILES
+    unset LOCALFILES
+    unset APACHE
+    unset DB_ROOT_PWD
 
 reboot

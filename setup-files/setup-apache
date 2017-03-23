@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set variable
+    export APACHE="/etc/httpd/conf/httpd.conf"
+
 # Install Apache
     yum install -y httpd
     systemctl start httpd.service
@@ -10,10 +13,10 @@
     # sed -i 's|^|#&|g' /etc/httpd/conf.d/welcome.conf # hides welcome page
 
 # Backup original file
-    cp /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.orig
+    cp $APACHE $APACHE.orig
 
 # Modify settings
-    sed -i "s|Options Indexes FollowSymLinks|Options FollowSymLinks|" /etc/httpd/conf/httpd.conf
+    sed -i "s|Options Indexes FollowSymLinks|Options FollowSymLinks|" $APACHE # line 144
 
 # Add virtual hosts
     cat $LOCALFILES/apache-vhost >> /etc/httpd/conf/vhosts.conf

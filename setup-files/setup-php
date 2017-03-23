@@ -1,17 +1,22 @@
 #!/bin/bash
 
+# Set variable
+    PHP="/etc/php.ini"
+
 # Install PHP 5.4.16 and dependencies (for Phabricator)
     yum install -y php php-cli php-common php-gd php-mbstring php-mysql php-apc php-process
 
 # Backup original file
-    cp /etc/php.ini /etc/php.ini.orig
+    cp $PHP $PHP.orig
 
 # Modify settings
-    sed -i "s|disable_functions =|disable_functions = exec,system,shell_exec,passthru|" /etc/php.ini # line 314
-    sed -i "s|expose_php = On|expose_php = Off|" /etc/php.ini # line 375
-    sed -i "s|max_execution_time = 30|max_execution_time = 300|" /etc/php.ini # line 384
-    sed -i "s|max_input_time = 60|max_input_time = 120|" /etc/php.ini # line 394
-    sed -i "s|post_max_size = 8M|post_max_size = 105M|" /etc/php.ini # line 672
-    sed -i "s|upload_max_filesize = 2M|upload_max_filesize = 100M|" /etc/php.ini # line 800
-    sed -i "s|;date.timezone =|date.timezone = America/Denver|" /etc/php.ini # line 878
-    sed -i "s|mysql.default_password =|;mysql.default_password =|" /etc/php.ini # line 1108
+    sed -i "s|expose_php = On|expose_php = Off|" $PHP # line 375
+    sed -i "s|max_execution_time = 30|max_execution_time = 300|" $PHP # line 384
+    sed -i "s|max_input_time = 60|max_input_time = 120|" $PHP # line 394
+    sed -i "s|post_max_size = 8M|post_max_size = 105M|" $PHP # line 672
+    sed -i "s|upload_max_filesize = 2M|upload_max_filesize = 100M|" $PHP # line 800
+    sed -i "s|;date.timezone =|date.timezone = America/Denver|" $PHP # line 878
+    sed -i "s|mysql.default_password =|;mysql.default_password =|" $PHP # line 1108
+
+# Unset variable
+    unset PHP

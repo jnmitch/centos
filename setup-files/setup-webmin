@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set variable
+    WEBMIN="/etc/webmin/miniserv.conf"
+
 # Install EPEL Repo
     yum --enablerepo=extras install -y epel-release
 
@@ -15,14 +18,17 @@
 
 # Change Webmin Port
     # duplicate config file
-        cp /etc/webmin/miniserv.conf /etc/webmin/miniserv.conf.orig
+        cp $WEBMIN $WEBMIN.orig
     # replace port on 1st line
-        # OLD: sed -i '1s/^/port=50505\n/' /etc/webmin/miniserv.conf
-        sed -i -e 's|port=10000|port=50505|' /etc/webmin/miniserv.conf
+        # OLD: sed -i '1s/^/port=50505\n/' $WEBMIN
+        sed -i -e 's|port=10000|port=50505|' $WEBMIN
     # replace listen on 22nd line
-        # OLD: sed -i '22s/^/listen=50505\n/' /etc/webmin/miniserv.conf
-        sed -i -e 's|listen=10000|listen=50505|' /etc/webmin/miniserv.conf
+        # OLD: sed -i '22s/^/listen=50505\n/' $WEBMIN
+        sed -i -e 's|listen=10000|listen=50505|' $WEBMIN
 
 # Start Webmin
     chkconfig webmin on
     systemctl start webmin
+
+# Unset variable
+    unset WEBMIN

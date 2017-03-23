@@ -2,6 +2,7 @@
 
     yum install -y phpmyadmin
 
+# Set variable
     PMA="/etc/httpd/conf.d/phpMyAdmin.conf"
 
 # Modify settings
@@ -16,4 +17,5 @@
     sed -i '0,/<\/RequireAny>/s/<\/RequireAny>/\t Require all granted\n     &/' $PMA
     sed -i "s|Deny from All|# Deny from All|g" $PMA
     
-    systemctl restart httpd
+    systemctl restart httpd# Unset variable
+    unset PMA

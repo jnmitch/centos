@@ -22,4 +22,6 @@
     # IPADDR="172.16.1.25"
     # PREFIX="24"
     # GATEWAY="172.16.1.254"
-    # IPV6_PRIVACY="no"
+    # IPV6_PRIVACY="no"# Unset variables
+    unset HOSTY
+    unset IPADDY

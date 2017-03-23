@@ -68,3 +68,8 @@
 # Save and Restart IPtables
     service $IPT save # creates: /etc/sysconfig/iptables
     systemctl restart $IPT
+
+# Unset variable
+    unset IPT
+    # unset IP6T
+
