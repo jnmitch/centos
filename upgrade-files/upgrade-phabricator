@@ -1,0 +1,64 @@
+#!/bin/sh
+
+# https://secure.phabricator.com/book/phabricator/article/upgrading/
+
+    set -e # Exit immediately if a command exits with a non-zero status
+    set -x # Print commands and their arguments as they are executed
+    # set -u # Treat unset variables as an error when substituting
+    # set -v # Print shell input lines as they are read
+
+# This is an example script for updating Phabricator, similar to the one used to
+# update <https://secure.phabricator.com/>. It might not work perfectly on your
+# system, but hopefully it should be easy to adapt. This script is not intended
+# to work without modifications
+
+# NOTE: This script assumes you are running it from a directory which contains
+# arcanist/, libphutil/, and phabricator/
+
+    PHAB="/var/www/html/phacility"
+
+### UPDATE WORKING COPIES ######################################################
+
+    cd $PHAB/libphutil
+    git pull
+
+    cd $PHAB/arcanist
+    git pull
+
+    cd $PHAB/phabricator
+    git pull
+
+### CYCLE WEB SERVER AND DAEMONS ###############################################
+
+# Stop daemons
+    $PHAB/phabricator/bin/phd stop
+
+# If running the notification server, stop it
+    # $PHAB/phabricator/bin/aphlict stop
+
+# Stop the webserver (apache, nginx, lighttpd, etc). This command will differ
+# depending on which system and webserver you are running: replace it with an
+# appropriate command for your system
+    # /etc/init.d/httpd stop
+    systemctl stop httpd
+
+# NOTE: If you're running php-fpm, you should stop it here, too
+    # .........
+
+# Upgrade the database schema. You may want to add the "--force" flag to allow
+# this script to run noninteractively
+    $PHAB/phabricator/bin/storage upgrade --force
+
+# Restart the webserver. As above, this depends on your system and webserver.
+    # /etc/init.d/httpd start
+    systemctl start httpd
+
+# NOTE: If you're running php-fpm, restart it here. too
+    # .........
+
+# Restart daemons
+    $PHAB/phabricator/bin/phd start
+
+# If running the notification server, start it
+    # $PHAB/phabricator/bin/aphlict start
+    
