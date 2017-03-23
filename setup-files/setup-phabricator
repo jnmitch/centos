@@ -46,11 +46,11 @@ EOF
     systemctl restart mariadb
 
 # Start Phabricator daemon so that it can do the required background tasks
-    ./bin/phd start
+    ./bin/phd start # logs will appear in "var/tmp/phd/log/daemons.log"
 
 # Configure the Base URI using the following command. It is important to configure the Base URI 
 # as most of the features in the application will be unavailable unless Base URI is configured
-    ./bin/config set phabricator.base-uri 'https://yourdomain.com'
+    # ./bin/config set phabricator.base-uri 'https://yourdomain.com'
 
 # Set the local repository path
     mkdir /var/www/html/github
