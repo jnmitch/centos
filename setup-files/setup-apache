@@ -4,7 +4,7 @@
     export APACHE="/etc/httpd/conf/httpd.conf"
 
 # Install Apache
-    yum install -y httpd
+    yum install -y httpd httpd-devel
     systemctl start httpd
     systemctl enable httpd
 

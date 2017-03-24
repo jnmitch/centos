@@ -2,9 +2,30 @@
 
 # Set variable
     PHP="/etc/php.ini"
+    # APC="/etc/php.d/apcu.ini"
 
 # Install PHP 5.4.16 and dependencies (for Phabricator)
-    yum install -y php php-cli php-common php-gd php-mbstring php-mysql php-apc php-process
+    yum install -y php php-cli php-common php-gd php-mbstring php-mysql php-apc php-process php-devel pcre-devel
+    # pecl install apc --force
+
+# Configure php-apc for Phabricator
+    # cp $APC $APC.orig
+    # sed -i "s|;apc.enable_cli=0|apc.enable_cli=1|" $APC # line 9
+    # sed -i "s|;apc.shm_size=32M|apc.shm_size=1024M|" $APC # line 19
+    # sed -i "s|;apc.ttl=0|apc_ttl=72000|" $APC # line 23
+    # sed -i "s|;apc.gc_ttl=3600|apc.gc_ttl=3600|" $APC # line 27
+    # # sed -i "s|;apc.user_entries_hint=4096|apc.user_entries_hint=20000|" $APC # line 39
+    # # echo "extension=apc.so" > /etc/php.d/apc.ini
+
+# Test APC (if Phabricator can be installed outside of default web directory :8080?)
+    # nano /var/www/phpinfo.php
+    #     <?php phpinfo(); ?>
+    # => http://yourdomain.com/phpinfo.php	
+    # cp /usr/share/pear/apc.php /var/www/html/
+    # nano /var/www/html/apc.php
+    #     defaults('ADMIN_USERNAME','<strong>apc</strong>');       // Admin Username
+    #     defaults('ADMIN_PASSWORD','<strong>password</strong>');  // Admin Password - CHANGE THIS TO ENABLE!!!
+    # => http://yourdomain.com/apc.php
 
 # Backup original file
     cp $PHP $PHP.orig
@@ -14,9 +35,11 @@
     sed -i "s|max_execution_time = 30|max_execution_time = 300|" $PHP # line 384
     sed -i "s|max_input_time = 60|max_input_time = 120|" $PHP # line 394
     sed -i "s|post_max_size = 8M|post_max_size = 105M|" $PHP # line 672
+    sed -i "s|;always_populate_raw_post_data = On|always_populate_raw_post_data = -1|" $PHP # line 698
     sed -i "s|upload_max_filesize = 2M|upload_max_filesize = 100M|" $PHP # line 800
     sed -i "s|;date.timezone =|date.timezone = America/Denver|" $PHP # line 878
     sed -i "s|mysql.default_password =|;mysql.default_password =|" $PHP # line 1108
 
 # Unset variable
     unset PHP
+    # unset APC

@@ -1,13 +1,18 @@
 #!/bin/bash
 
 # Set variable
-    PHAB="/var/www/html/phacility"
+    export PHAB="/var/www/html/phacility"
+    PHAB_FILES="/srv/phabricator/files"
     DB_PHAB_PWD=$(< $LOCALFILES/password-mysql_phabricator)
+    BASE_URI=$(hostname -I | cut -d" " -f 1) # set IP address as the base-uri when installing on VM
+
+# Create Phabricator directories
+    mkdir $PHAB # for application
+    mkdir /srv/phabricator && mkdir /srv/phabricator/files # for local file storage
+    chown -R apache:apache $PHAB_FILES
 
 # Download Phabricator
-    mkdir $PHAB
     cd $PHAB
-
     git clone https://github.com/phacility/arcanist.git
     git clone https://github.com/phacility/libphutil.git
     git clone https://github.com/phacility/phabricator.git
@@ -31,6 +36,14 @@
     FLUSH PRIVILEGES;
 EOF
 
+# Configure MySQL for Phabricator
+    sed -i "\|socket = /var/lib/mysql/mysql.sock|a max_allowed_packet=33554432" /etc/my.cnf
+    sed -i '\|max_allowed_packet=33554432|{x;p;x;}' /etc/my.cnf # add space before
+    sed -i "\|max_allowed_packet=33554432|a sql_mode=STRICT_ALL_TABLES" /etc/my.cnf
+    sed -i "\|sql_mode=STRICT_ALL_TABLES|a ft_stopword_file=$PHAB/phabricator/resources/sql/stopwords.txt" /etc/my.cnf
+    sed -i "\|ft_stopword_file=$PHAB/phabricator/resources/sql/stopwords.txt|a ft_min_word_len=3" /etc/my.cnf
+    sed -i "\|ft_min_word_len=3|a innodb_buffer_pool_size=800M" /etc/my.cnf # set to 40% of total RAM # cat /prov/meminfo ... Hugepagesize: 2048 kB
+
 # Setup the MariaDB credentials
     cd $PHAB/phabricator
 
@@ -45,12 +58,21 @@ EOF
 # Restart database
     systemctl restart mariadb
 
-# Start Phabricator daemon so that it can do the required background tasks
-    ./bin/phd start # logs will appear in "var/tmp/phd/log/daemons.log"
+# Configure Phabricator
+    ./bin/config set phabricator.base-uri http://$BASE_URI
+    # ./bin/search index --all --force --background # rebuild search index
+    # ./bin/config set security.alternate-file-domain <domain> # link to a CDN
+    ./bin/config set storage.local-disk.path $PHAB_FILES
 
-# Configure the Base URI using the following command. It is important to configure the Base URI 
-# as most of the features in the application will be unavailable unless Base URI is configured
-    # ./bin/config set phabricator.base-uri 'https://yourdomain.com'
+# Create service for PHD daemon
+    cat $SERVICEFILES/service-phabricator_phd > /lib/systemd/system/phabricator-phd.service
+    sed -e "s/\${PHAB}/$PHAB/" /lib/systemd/system/phabricator-phd.service
+
+# Start daemon so that it can do the required background tasks
+    systemctl enable phabricator-phd
+    chown -R apache:apache /var/tmp/phd/pid
+    systemctl start phabricator-phd
+    # ./bin/phd start # logs will appear in "var/tmp/phd/log/daemons.log"
 
 # Set the local repository path
     mkdir /var/www/html/github
@@ -58,4 +80,6 @@ EOF
 
 # Unset variable
     unset PHAB
+    unset PHAB_FILES
     unset DB_PHAB_PWD
+    unset BASE_URI
