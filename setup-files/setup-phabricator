@@ -8,8 +8,12 @@
 
 # Create Phabricator directories
     mkdir $PHAB # for application
-    mkdir /srv/phabricator && mkdir /srv/phabricator/files # for local file storage
+
+    mkdir /srv/phabricator && mkdir /srv/phabricator/files # for local file storage used by the application
     chown -R apache:apache $PHAB_FILES
+    
+    mkdir /srv/github # for local repository path used by application
+    chown -R apache:apache /srv/github
 
 # Download Phabricator
     cd $PHAB
@@ -60,23 +64,20 @@ EOF
 
 # Configure Phabricator
     ./bin/config set phabricator.base-uri http://$BASE_URI
-    # ./bin/search index --all --force --background # rebuild search index
+    ./bin/search index --all --force --background # rebuild search index
+    ./bin/config done reindex # to clear the setup warning
     # ./bin/config set security.alternate-file-domain <domain> # link to a CDN
     ./bin/config set storage.local-disk.path $PHAB_FILES
 
 # Create service for PHD daemon
     cat $SERVICEFILES/service-phabricator_phd > /lib/systemd/system/phabricator-phd.service
-    sed -e "s/\${PHAB}/$PHAB/" /lib/systemd/system/phabricator-phd.service
+    sed -i "s/\${PHAB}/$PHAB/" /lib/systemd/system/phabricator-phd.service
 
 # Start daemon so that it can do the required background tasks
     systemctl enable phabricator-phd
     chown -R apache:apache /var/tmp/phd/pid
     systemctl start phabricator-phd
     # ./bin/phd start # logs will appear in "var/tmp/phd/log/daemons.log"
-
-# Set the local repository path
-    mkdir /var/www/html/github
-    chown -R apache:apache /var/www/html/github
 
 # Unset variable
     unset PHAB
