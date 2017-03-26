@@ -17,10 +17,9 @@
 
 # Mount shared folder(s)
     mkdir /mnt/github
-    mount –t vboxsf /github /mnt/github # also exists at /media/sf_github
+    mount –t vboxsf /Github /mnt/github # also exists at /media/sf_github
 
 # Change mounted file encoding
-    bash $SETUPFILES/mount
     sed -i 's/\r$//' /mnt/github/*.*
 
 # Run VM config scripts
