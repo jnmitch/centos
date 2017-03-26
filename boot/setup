@@ -8,7 +8,7 @@
     SETUPFILES="/mnt/github/jnmitch/centos/setup"
     export LOCALFILES="/mnt/github/jnmitch/centos/local"
     export SERVICEFILES="/mnt/github/jnmitch/centos/service"
-    export DB_ROOT_PWD=$(< $LOCALFILES/password-mysql_root)
+    export DB_ROOT_PWD=$(< $LOCALFILES/pass-mysql-root)
 
 # Change mounted file encoding
     mkdir /mnt/github
