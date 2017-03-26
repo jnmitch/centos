@@ -56,12 +56,12 @@
     # postgres port
         # $IPT -A INPUT -p tcp -m state --state NEW --dport 5432 -j ACCEPT
     # phabricator port (custom)
-        $IPT -A INPUT -p tcp -m state --state NEW --dport 8080 -j ACCEPT
-        $IPT -A INPUT -p tcp -m state --state NEW --dport 8088 -j ACCEPT
+        # $IPT -A INPUT -p tcp -m state --state NEW --dport 8080 -j ACCEPT
+        # $IPT -A INPUT -p tcp -m state --state NEW --dport 8088 -j ACCEPT
     # mongoDB port
         # $IPT -A INPUT -p tcp -m state --state NEW --dport 27017 -j ACCEPT
     # __________ port (custom)
-        $IPT -A INPUT -p tcp -m state --state NEW --dport 40404 -j ACCEPT
+        # $IPT -A INPUT -p tcp -m state --state NEW --dport 40404 -j ACCEPT
     # webmin port (custom)
         $IPT -A INPUT -p tcp -m state --state NEW --dport 50505 -j ACCEPT
     # phppgadmin port (custom)

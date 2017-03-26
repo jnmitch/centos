@@ -1,0 +1,39 @@
+#!/bin/bash
+
+    set -e # exit immediately if a command exits with a non-zero status
+    set -x # print commands and their arguments as they are executed
+    set -u # treat unset variables as an error when substituting
+
+# Set Variables
+    SETUPFILES="/mnt/github/jnmitch/centos/setup"
+    export LOCALFILES="/mnt/github/jnmitch/centos/local"
+    export SERVICEFILES="/mnt/github/jnmitch/centos/service"
+    export DB_ROOT_PWD=$(< $LOCALFILES/pass-mysql-root)
+
+# Change mounted file encoding
+    sed -i 's/\r$//' $SETUPFILES/system
+    sed -i 's/\r$//' $SETUPFILES/network
+    sed -i 's/\r$//' $SETUPFILES/firewall
+    sed -i 's/\r$//' $SETUPFILES/webmin
+
+# Run VM config scripts
+    bash $SETUPFILES/system
+    bash $SETUPFILES/network
+    bash $SETUPFILES/firewall
+    bash $SETUPFILES/webmin
+
+# Permanently disable SELinux
+    # sed -i "s|SELINUX=enforcing|SELINUX=disabled|" /etc/sysconfig/selinux
+
+# SSH
+    # ssh -p 2424 jeff@localhost
+
+# Unset Variables
+    unset SETUPFILES
+    unset LOCALFILES
+    unset SERVICEFILES
+    unset DB_ROOT_PWD
+
+# Reboot server
+    reboot
+    
