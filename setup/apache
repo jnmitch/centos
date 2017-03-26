@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set variable
-    export APACHE="/etc/httpd/conf/httpd.conf"
+    APACHE="/etc/httpd/conf/httpd.conf"
 
 # Install Apache
     yum install -y httpd httpd-devel
@@ -25,4 +25,7 @@
     # mkdir -p /var/www/html/example.com/{public_html,logs}
 
 # Restart Apache after modifying
-    # systemctl restart httpd # (restarting in phpmyadmin script)
+    systemctl restart httpd
+
+# Unset variable
+    unset APACHE
