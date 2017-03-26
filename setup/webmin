@@ -7,7 +7,7 @@
     yum --enablerepo=extras install -y epel-release
 
 # Create Webmin Repo
-    cat $LOCALFILES/settings-webmin_repo > /etc/yum.repos.d/webmin.repo
+    cat $LOCALFILES/repo-webmin > /etc/yum.repos.d/webmin.repo
 
 # Install Webmin
     cd /tmp
@@ -16,9 +16,10 @@
     yum check-update
     yum install -y webmin perl-Socket6
 
-# Change Webmin Port
+# Backup Webmin config
     cp $WEBMIN $WEBMIN.orig
 
+# Change Webmin Port
     sed -i -e 's|port=10000|port=50505|' $WEBMIN
     sed -i -e 's|listen=10000|listen=50505|' $WEBMIN
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Auto-mount local shared folders on startup
-    cat $LOCALFILES/settings-mount_local_folders >> /etc/fstab
+    cat $LOCALFILES/mount-folders >> /etc/fstab
 
 # SELinux management tools
     yum install -y policycoreutils-python # for 'semanage permissive'
