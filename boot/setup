@@ -13,25 +13,17 @@
 # Change file encoding
     sed -i 's/\r$//' /tmp/boot/*.*
 
-# Create and mount cdrom
-    mkdir /media/cdrom
-    mount /dev/cdrom /media/cdrom
-    /media/cdrom/VBoxLinuxAdditions.run
-
-# Mount shared folder(s)
-    mkdir /mnt/github
-    mount –t vboxsf /github /mnt/github # also exists at /media/sf_github
-
 # Run VM config scripts
+    bash $SETUPFILES/mount
     bash $SETUPFILES/system
     bash $SETUPFILES/network
     bash $SETUPFILES/firewall
     bash $SETUPFILES/webmin
-    bash $SETUPFILES/mysql
-    bash $SETUPFILES/apache
-    bash $SETUPFILES/php
-    bash $SETUPFILES/phpmyadmin
-    # bash $SETUPFILES/phppgadmin
+    # bash $SETUPFILES/mysql
+    # bash $SETUPFILES/apache
+    # bash $SETUPFILES/php
+    # bash $SETUPFILES/phpmyadmin
+    # bash $SETUPFILESs/phppgadmin
 
 # Permanently disable SELinux
     # sed -i "s|SELINUX=enforcing|SELINUX=disabled|" /etc/sysconfig/selinux
