@@ -1,0 +1,5 @@
+#!/bin/bash
+    
+# Run VM config scripts
+    bash /mnt/github/jnmitch/centos/setup-files/setup-vm
+    

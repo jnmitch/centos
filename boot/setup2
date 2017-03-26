@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Update yum
+    yum update -y; # for kernal update
+    
+# Reboot server
+    reboot 

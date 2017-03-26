@@ -1,0 +1,24 @@
+#!/bin/bash
+
+    set -e # exit immediately if a command exits with a non-zero status
+    set -x # print commands and their arguments as they are executed
+    set -u # treat unset variables as an error when substituting
+
+# Change file encoding
+    sed -i 's/\r$//' ./setup.1
+    sed -i 's/\r$//' ./setup.2
+    sed -i 's/\r$//' ./setup.3
+    sed -i 's/\r$//' ./setup.4
+
+# Set network for DHCP
+    sed -i "s|ONBOOT=no|ONBOOT=yes|" /etc/sysconfig/network-scripts/ifcfg-en*
+    cat /etc/sysconfig/network-scripts/ifcfg-en*
+    systemctl restart network
+
+# Permanently disable SELinux
+    sed -i "s|SELINUX=enforcing|SELINUX=disabled|" /etc/sysconfig/selinux
+    cat /etc/sysconfig/selinux
+
+# Reboot server
+    reboot
+    

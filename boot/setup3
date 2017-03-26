@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Install admin tools
+    yum install -y nano git wget bzip2 which # for file activity
+
+# Install development tools
+    yum install -y gcc-c++ make kernel-devel; reboot # for mounting shared folders
+
