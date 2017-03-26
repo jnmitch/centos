@@ -1,0 +1,52 @@
+#!/bin/bash
+
+    set -e # exit immediately if a command exits with a non-zero status
+    set -x # print commands and their arguments as they are executed
+    set -u # treat unset variables as an error when substituting
+
+# Set Variables
+    SETUPFILES="/mnt/github/jnmitch/centos/setup"
+    export LOCALFILES="/mnt/github/jnmitch/centos/local"
+    export SERVICEFILES="/mnt/github/jnmitch/centos/service"
+    export DB_ROOT_PWD=$(< $LOCALFILES/password-mysql_root)
+
+# Change file encoding
+    sed -i 's/\r$//' /tmp/boot/*.*
+
+# Create and mount cdrom
+    mkdir /media/cdrom
+    mount /dev/cdrom /media/cdrom
+    /media/cdrom/VBoxLinuxAdditions.run
+
+# Mount shared folder(s)
+    mkdir /mnt/github
+    mount –t vboxsf /github /mnt/github # also exists at /media/sf_github
+
+# Run VM config scripts
+    bash $SETUPFILES/system
+    bash $SETUPFILES/network
+    bash $SETUPFILES/firewall
+    bash $SETUPFILES/webmin
+    bash $SETUPFILES/mysql
+    bash $SETUPFILES/apache
+    bash $SETUPFILES/php
+    bash $SETUPFILES/phpmyadmin
+    # bash $SETUPFILES/phppgadmin
+
+# Permanently disable SELinux
+    # sed -i "s|SELINUX=enforcing|SELINUX=disabled|" /etc/sysconfig/selinux
+
+# SSH
+    # ssh -p 2424 jeff@localhost
+
+# Unset Variables
+    unset SETUPFILES
+    unset LOCALFILES
+    unset SERVICEFILES
+    unset DB_ROOT_PWD
+    unset PHP
+    unset APACHE
+
+# Reboot server
+    # reboot
+    
