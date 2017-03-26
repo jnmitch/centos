@@ -10,8 +10,16 @@
     export SERVICEFILES="/mnt/github/jnmitch/centos/service"
     export DB_ROOT_PWD=$(< $LOCALFILES/pass-mysql-root)
 
-# Change mounted file encoding
+# Create and mount cdrom
+    mkdir /media/cdrom
+    mount /dev/cdrom /media/cdrom
+    /media/cdrom/VBoxLinuxAdditions.run
+
+# Mount shared folder(s)
     mkdir /mnt/github
+    mount –t vboxsf /github /mnt/github # also exists at /media/sf_github
+
+# Change mounted file encoding
     bash $SETUPFILES/mount
     sed -i 's/\r$//' /mnt/github/*.*
 
