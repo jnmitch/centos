@@ -1,13 +1,23 @@
 #!/bin/bash
 
 # Set variable
-    PHAB="/var/www/html/phacility"
+    export PHAB="/opt/phacility"
+    PHAB_FILES="/srv/phabricator/files"
+    SQL="/etc/my.cnf"
     DB_PHAB_PWD=$(< $LOCALFILES/password-mysql_phabricator)
+    BASE_URI=$(hostname -I | cut -d" " -f 1) # set IP address as the base-uri when installing on VM
+
+# Create Phabricator directories
+    mkdir $PHAB # for application
+
+    mkdir /srv/phabricator && mkdir $PHAB_FILES # for local file storage used by the application
+    chown -R apache:apache /srv/phabricator
+    
+    mkdir /srv/github # for local repository path used by application
+    chown -R apache:apache /srv/github
 
 # Download Phabricator
-    mkdir $PHAB
     cd $PHAB
-
     git clone https://github.com/phacility/arcanist.git
     git clone https://github.com/phacility/libphutil.git
     git clone https://github.com/phacility/phabricator.git
@@ -16,10 +26,12 @@
     chown -R apache:apache $PHAB
 
 # Setup virtual host
+    cat contents of a file >>>> right into a certain place in another file
+    "# List virtual hosts below, if any."
     cat $LOCALFILES/apache-vhost_phabricator >> /etc/httpd/conf.d/vhosts.conf
 
 # Modify Apache settings
-    # sed -i "/Listen \*:80/a Listen \*:8080" $APACHE # line 42
+    sed -i "/Listen \*:80/a Listen \*:40404" $APACHE # line 42
 
 # Restart the Apache service
     systemctl restart httpd
@@ -30,6 +42,18 @@
     GRANT ALL PRIVILEGES ON *.* TO 'phabricator'@'localhost';
     FLUSH PRIVILEGES;
 EOF
+
+# Backup original MySQL config file
+    cp $SQL $SQL.orig
+
+# Configure MySQL for Phabricator
+    sed -i '\|# Disabling symbolic-links is recommended to prevent assorted security risks|{x;p;x;}' $SQL # add space before
+    sed -i "\|socket=/var/lib/mysql/mysql.sock|a max_allowed_packet=33554432" $SQL
+    sed -i '\|max_allowed_packet=33554432|{x;p;x;}' $SQL # add space before
+    sed -i "\|max_allowed_packet=33554432|a sql_mode=STRICT_ALL_TABLES" $SQL
+    sed -i "\|sql_mode=STRICT_ALL_TABLES|a ft_stopword_file=$PHAB/phabricator/resources/sql/stopwords.txt" $SQL
+    sed -i "\|ft_stopword_file=$PHAB/phabricator/resources/sql/stopwords.txt|a ft_min_word_len=3" $SQL
+    sed -i "\|ft_min_word_len=3|a innodb_buffer_pool_size=800M" $SQL # set to 40% of total RAM # cat /prov/meminfo ... Hugepagesize: 2048 kB
 
 # Setup the MariaDB credentials
     cd $PHAB/phabricator
@@ -45,17 +69,29 @@ EOF
 # Restart database
     systemctl restart mariadb
 
-# Start Phabricator daemon so that it can do the required background tasks
-    ./bin/phd start
+# Configure Phabricator
+    ./bin/config set phabricator.base-uri http://$BASE_URI
+    # ./bin/search index --all --force --background # rebuild search index # NOTHING TO INDEX
+    # ./bin/config done reindex # to clear the setup warning # NOTHING TO INDEX
+    # ./bin/config set security.alternate-file-domain <domain> # link to a CDN
+    ./bin/config set storage.local-disk.path $PHAB_FILES
 
-# Configure the Base URI using the following command. It is important to configure the Base URI 
-# as most of the features in the application will be unavailable unless Base URI is configured
-    ./bin/config set phabricator.base-uri 'https://yourdomain.com'
+# Create service for PHD daemon
+    cat $SERVICEFILES/service-phabricator_phd > /lib/systemd/system/phabricator-phd.service
+    sed -i "s|ExecStart=PHAB_DIR/phabricator/bin/phd start|ExecStart=$PHAB/phabricator/bin/phd start|" /lib/systemd/system/phabricator-phd.service
+    sed -i "s|ExecStop=PHAB_DIR/phabricator/bin/phd stop|ExecStop=$PHAB/phabricator/bin/phd stop|" /lib/systemd/system/phabricator-phd.service
 
-# Set the local repository path
-    mkdir /var/www/html/github
-    chown -R apache:apache /var/www/html/github
+# Start daemon so that it can do the required background tasks
+    systemctl enable phabricator-phd
+    chown -R apache:apache /var/tmp/phd/pid
+    systemctl start phabricator-phd
+    # ./bin/phd start # logs will appear in "var/tmp/phd/log/daemons.log"
+
+systemctl restart httpd
 
 # Unset variable
+
     unset PHAB
+    unset PHAB_FILES
     unset DB_PHAB_PWD
+    unset BASE_URI
