@@ -10,11 +10,12 @@
     export SERVICEFILES="/mnt/github/jnmitch/centos/service"
     export DB_ROOT_PWD=$(< $LOCALFILES/password-mysql_root)
 
-# Change file encoding
-    sed -i 's/\r$//' /tmp/boot/*.*
+# Change mounted file encoding
+    mkdir /mnt/github
+    bash $SETUPFILES/mount
+    sed -i 's/\r$//' /mnt/github/*.*
 
 # Run VM config scripts
-    bash $SETUPFILES/mount
     bash $SETUPFILES/system
     bash $SETUPFILES/network
     bash $SETUPFILES/firewall

@@ -6,5 +6,5 @@
     /media/cdrom/VBoxLinuxAdditions.run
 
 # Mount shared folder(s)
-    mkdir /mnt/github
+
     mount –t vboxsf /github /mnt/github # also exists at /media/sf_github
