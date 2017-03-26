@@ -115,7 +115,6 @@ coverage
 .nyc_output
 
 # VM server setup files
-boot/manual
 setup/test*
 local/
 

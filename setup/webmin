@@ -25,7 +25,7 @@
 
 # Start Webmin
     # systemctl start webmin
-    chkconfig webmin on
+    /sbin/chkconfig webmin on
     systemctl enable webmin
 
 # Unset variable
