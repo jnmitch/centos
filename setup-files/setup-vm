@@ -1,80 +1,60 @@
 #!/bin/bash
+    set -e # exit immediately if a command exits with a non-zero status
+    set -x # print commands and their arguments as they are executed
+    set -u # treat unset variables as an error when substituting
 
-#################################################
-# Set Variables                                 #
-#################################################
+# Set Variables
     SETUPFILES="/mnt/github/jnmitch/centos/setup-files"
     export LOCALFILES="/mnt/github/jnmitch/centos/local-files"
     export SERVICEFILES="/mnt/github/jnmitch/centos/service-files"
     export DB_ROOT_PWD=$(< $LOCALFILES/password-mysql_root)
 
-#################################################
-# System                                        #
-#################################################
-    chmod +x $SETUPFILES/setup-system
+# System
+    sed -i 's/\r$//' $SETUPFILES/setup-system
     bash $SETUPFILES/setup-system
 
-#################################################
-# Network                                       #
-#################################################
-    chmod +x $SETUPFILES/setup-network
+# Network
+    sed -i 's/\r$//' $SETUPFILES/setup-network
     bash $SETUPFILES/setup-network
 
-#################################################
-# Firewall                                      #
-#################################################
-    chmod +x $SETUPFILES/setup-firewall
+# Firewall
+    sed -i 's/\r$//' $SETUPFILES/setup-firewall
     bash $SETUPFILES/setup-firewall
 
-#################################################
-# Webmin                                        #
-#################################################
-    chmod +x $SETUPFILES/setup-webmin
+# Webmin
+    sed -i 's/\r$//' $SETUPFILES/setup-webmin
     bash $SETUPFILES/setup-webmin
 
-#################################################
-# MySQL (MariaDB)                               #
-#################################################
-    chmod +x $SETUPFILES/setup-mysql
+# MySQL (MariaDB)
+    sed -i 's/\r$//' $SETUPFILES/setup-mysql
     bash $SETUPFILES/setup-mysql
 
-#################################################
-# PHP                                           #
-#################################################
-    chmod +x $SETUPFILES/setup-php
-    bash $SETUPFILES/setup-php
-
-#################################################
-# Apache                                        #
-#################################################
-    chmod +x $SETUPFILES/setup-apache
+# Apache
+    sed -i 's/\r$//' $SETUPFILES/setup-apache
     bash $SETUPFILES/setup-apache
 
-#################################################
-# phpMyAdmin                                    #
-#################################################
-    chmod +x $SETUPFILES/setup-phpmyadmin
+# PHP
+    sed -i 's/\r$//' $SETUPFILES/setup-php
+    bash $SETUPFILES/setup-php
+
+# phpMyAdmin
+    sed -i 's/\r$//' $SETUPFILES/setup-phpmyadmin
     bash $SETUPFILES/setup-phpmyadmin
 
-# #################################################
-# # phpPgAdmin                                    #
-# #################################################
-#     chmod +x $SETUPFILES/setup-phppgadmin
-#     bash $SETUPFILES/setup-phppgadmin
+# phpPgAdmin
+    # # sed -i 's/\r$//' $SETUPFILES/setup-phppgadmin
+    # # bash $SETUPFILES/setup-phppgadmin
 
-#################################################
-# Phabricator                                   #
-#################################################
-    chmod +x $SETUPFILES/setup-phabricator
+# Phabricator
+    sed -i 's/\r$//' $SETUPFILES/setup-phabricator
     bash $SETUPFILES/setup-phabricator
 
-#################################################
-# Unset Variables                               #
-#################################################
+# Unset Variables
     unset SETUPFILES
     unset LOCALFILES
     unset SERVICEFILES
-    unset APACHE
     unset DB_ROOT_PWD
+    unset PHP
+    unset APACHE
 
-reboot
+# reboot

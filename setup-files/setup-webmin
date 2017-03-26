@@ -17,18 +17,15 @@
     yum install -y webmin perl-Socket6
 
 # Change Webmin Port
-    # duplicate config file
-        cp $WEBMIN $WEBMIN.orig
-    # replace port on 1st line
-        # OLD: sed -i '1s/^/port=50505\n/' $WEBMIN
-        sed -i -e 's|port=10000|port=50505|' $WEBMIN
-    # replace listen on 22nd line
-        # OLD: sed -i '22s/^/listen=50505\n/' $WEBMIN
-        sed -i -e 's|listen=10000|listen=50505|' $WEBMIN
+    cp $WEBMIN $WEBMIN.orig
+
+    sed -i -e 's|port=10000|port=50505|' $WEBMIN
+    sed -i -e 's|listen=10000|listen=50505|' $WEBMIN
 
 # Start Webmin
+    # systemctl start webmin
     chkconfig webmin on
-    systemctl start webmin
+    systemctl enable webmin
 
 # Unset variable
     unset WEBMIN

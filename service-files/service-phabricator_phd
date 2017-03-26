@@ -8,8 +8,8 @@ User=apache
 Group=apache
 Type=oneshot
 Environment="PATH=/sbin:/usr/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/bin"
-ExecStart=${PHAB}/phabricator/bin/phd start
-ExecStop=${PHAB}/phabricator/bin/phd stop
+ExecStart=PHAB_DIR/phabricator/bin/phd start
+ExecStop=PHAB_DIR/phabricator/bin/phd stop
 RemainAfterExit=yes
 
 [Install]

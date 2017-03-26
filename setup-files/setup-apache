@@ -16,7 +16,7 @@
     cp $APACHE $APACHE.orig
 
 # Modify settings
-    sed -i "s|Options Indexes FollowSymLinks|Options FollowSymLinks|" $APACHE # line 144
+    # sed -i "s|Options Indexes FollowSymLinks|Options FollowSymLinks|" $APACHE # line 144 (166?)
 
 # Add virtual hosts
     cat $LOCALFILES/apache-vhosts > /etc/httpd/conf.d/vhosts.conf

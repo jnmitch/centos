@@ -50,6 +50,9 @@
 # To change all the files to 644 (-rw-r--r--)
     find /opt/lampp/htdocs -type f -exec chmod 644 {} \;
 
+# List APC info
+    php -i | grep apc
+
 "[[ tail -n 10 /var/log/mongodb/mongod.log ]]
 [[ npm list --depth=0 ]]
 [[ npm list -g --depth=0 ]]"
