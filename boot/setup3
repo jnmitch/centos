@@ -11,12 +11,14 @@
     export DB_ROOT_PWD=$(< $LOCALFILES/pass-mysql-root)
 
 # Change mounted file encoding
-    sed -i 's/\r$//' $SETUPFILES/apache
-    sed -i 's/\r$//' $SETUPFILES/php
+    sed -i 's/\r$//' $SETUPFILES/mysql
+    sed -i 's/\r$//' $SETUPFILES/phpmyadmin
+    # sed -i 's/\r$//' $SETUPFILES/phppgadmin
 
 # Run VM config scripts
-    bash $SETUPFILES/apache
-    bash $SETUPFILES/php
+    bash $SETUPFILES/mysql
+    bash $SETUPFILES/phpmyadmin
+    # bash $SETUPFILESs/phppgadmin
 
 # Unset Variables
     unset SETUPFILES
