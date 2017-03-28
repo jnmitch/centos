@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Network settings
-    cat $LOCALFILES/network-boot >> /etc/sysconfig/network-scripts/ifcfg-en*
-
 # Install network tools
     yum install -y lsof nmap
+
+# Network settings
+    cat $INCLUDE/network-staticip >> /etc/sysconfig/network-scripts/ifcfg-enp*
 
 # Set hostname variable
     # OLD: echo "Please set the hostname (machineName machineName.domainName.ext): "

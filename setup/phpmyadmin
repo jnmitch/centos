@@ -23,7 +23,7 @@
     sed -i "/Listen \*:80/a Listen \*:60606" $APACHE # line 42
 
 # Setup virtual host
-    cat $LOCALFILES/apache-vhost_phpmyadmin >> /etc/httpd/conf.d/vhosts.conf
+    cat $INCLUDE/apache-vhost-pma >> /etc/httpd/conf.d/vhosts.conf
 
 # Restart Apache after modifying    
     systemctl restart httpd
