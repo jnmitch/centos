@@ -6,7 +6,7 @@
     systemctl restart network
 
 # Update yum
-    yum update -y; reboot # for kernal update and bash
+    yum -y update && yum -y upgrade; reboot # for kernal update and bash
 
 # Install admin tools
     yum install -y nano git wget bzip2 which # for file activity
@@ -23,10 +23,13 @@
     mkdir /mnt/github
     mount –t vboxsf /Github /mnt/github # also exists at /media/sf_github
 
+# Set variables
+    BOOTER="/mnt/github/jnmitch/centos/boot"
+
 # Change mounted file encoding
-    sed -i 's/\r$//' /mnt/github/jnmitch/centos/boot/setup1
-    sed -i 's/\r$//' /mnt/github/jnmitch/centos/boot/setup2
+    sed -i 's/\r$//' $BOOTER/setup1
+    sed -i 's/\r$//' $BOOTER/setup2
 
 # Run install scripts
-    bash /mnt/github/jnmitch/centos/boot/setup1
-    bash /mnt/github/jnmitch/centos/boot/setup2
+    bash $BOOTER/setup1
+    bash $BOOTER/setup2

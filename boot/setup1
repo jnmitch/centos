@@ -7,19 +7,24 @@
 # Set Variables
     SETUPFILES="/mnt/github/jnmitch/centos/setup"
     export LOCALFILES="/mnt/github/jnmitch/centos/local"
+    export INCLUDE="/mnt/github/jnmitch/centos/include"
     export SERVICEFILES="/mnt/github/jnmitch/centos/service"
     export DB_ROOT_PWD=$(< $LOCALFILES/pass-mysql-root)
 
 # Change mounted file encoding
     sed -i 's/\r$//' $SETUPFILES/system
     sed -i 's/\r$//' $SETUPFILES/network
-    sed -i 's/\r$//' $SETUPFILES/firewall
+    sed -i 's/\r$//' $SETUPFILES/ssh
+    # sed -i 's/\r$//' $SETUPFILES/firewalld
+    sed -i 's/\r$//' $SETUPFILES/iptables
     sed -i 's/\r$//' $SETUPFILES/webmin
 
 # Run VM config scripts
     bash $SETUPFILES/system
     bash $SETUPFILES/network
-    bash $SETUPFILES/firewall
+    bash $SETUPFILES/ssh
+    # bash $SETUPFILES/firewalld
+    bash $SETUPFILES/iptables
     bash $SETUPFILES/webmin
 
 # Permanently disable SELinux
@@ -31,9 +36,10 @@
 # Unset Variables
     unset SETUPFILES
     unset LOCALFILES
+    unset INCLUDE
     unset SERVICEFILES
     unset DB_ROOT_PWD
 
 # Reboot server
-    reboot
-    
+    # CONSIDER SSH AFTER REBOOT OF SETUP1
+    # reboot

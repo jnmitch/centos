@@ -1,4 +1,5 @@
 #!/bin/bash
+# CONSIDER SSH AFTER REBOOT OF SETUP1
 
     set -e # exit immediately if a command exits with a non-zero status
     set -x # print commands and their arguments as they are executed
@@ -7,6 +8,7 @@
 # Set Variables
     SETUPFILES="/mnt/github/jnmitch/centos/setup"
     export LOCALFILES="/mnt/github/jnmitch/centos/local"
+    export INCLUDE="/mnt/github/jnmitch/centos/include"
     export SERVICEFILES="/mnt/github/jnmitch/centos/service"
     export DB_ROOT_PWD=$(< $LOCALFILES/pass-mysql-root)
 
@@ -21,6 +23,7 @@
 # Unset Variables
     unset SETUPFILES
     unset LOCALFILES
+    unset INCLUDE
     unset SERVICEFILES
     unset DB_ROOT_PWD
 
