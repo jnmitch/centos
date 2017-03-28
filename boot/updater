@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Set variables
+    # UPDATER="/mnt/github/jnmitch/centos/update"
+
+# Change mounted file encoding
+    sed -i 's/\r$//' $UPDATER/20170326
+
+# Run install scripts
+    bash $UPDATER/20170326
