@@ -1,0 +1,18 @@
+#!/bin/bash
+# http://www.tecmint.com/things-to-do-after-minimal-rhel-centos-7-installation/3#C14
+
+# Start Firewalld
+    systemctl enable firewalld
+    systemctl start firewalld
+
+# Allow service http through firewall (Permanent)
+    firewall-cmd --add-service=http --permanent
+
+# Allow port XXXX through firewall (Permanent)
+    firewall-cmd --add-port=XXXX/tcp --permanent
+
+# Reload firewall
+    firewall-cmd --reload
+
+# Restart Apache HTTP server
+    systemctl restart httpd
