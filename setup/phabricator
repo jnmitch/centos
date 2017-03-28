@@ -26,7 +26,8 @@
     chown -R apache:apache $PHAB
 
 # Setup virtual host
-    cat contents of a file >>>> right into a certain place in another file
+    # cat contents of a file >>>> right into a certain place in another file
+    # sed -i -e '/Pointer/r file1' file2 # pointer is above insert
     "# List virtual hosts below, if any."
     cat $LOCALFILES/apache-vhost_phabricator >> /etc/httpd/conf.d/vhosts.conf
 

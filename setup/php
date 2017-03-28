@@ -31,7 +31,7 @@
     sed -i "s|mysql.default_password =|;mysql.default_password =|" $PHP # line 1108
 
 # Test PHP
-    echo "<?php phpinfo(); ?>" > /var/www/html/phpinfo.php
+    echo -e "<?php\nphpinfo();\n?>"  > /var/www/html/phpinfo.php
     # => http://yourdomain.com/phpinfo.php
 
 # Test APC
