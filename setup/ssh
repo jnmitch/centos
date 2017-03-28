@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Set variable
+    SSHFILE="/etc/ssh/sshd_config"
+
+# Allow SSH through firewalld
+    # firewall-cmd --add-service=???
+    # firewall-cmd -permanent -add-port=XXXX/tcp
+
+# Backup original file
+    cp $SSHFILE $SSHFILE.orig
+
+# If you want to change the port on a SELinux system, you have to tell SELinux about this change.
+    # semanage port -a -t ssh_port_t -p tcp #PORTNUMBER
+
+# Create new keys (if a CLONE)
+    # systemctl stop sshd
+    # cp -r /etc/ssh /etc/ssh-orig
+    # cd /etc/ssh
+    # rm -f *_key*
+    # systemctl start sshd
+
+# Upload pre-configured SSHD Config [OPEN]
+    \cp $INCLUDE/ssh-config-open $SSHFILE
+
+# Upload jnmitch public key
+    mkdir ~/.ssh
+    mkdir ~/.ssh/authorized_keys
+    # => Rmember to first copy/paste the one-liner OpenSSH key from PuttyGen into public key file (starting with ssh-rsa)
+    \cp $LOCALFILES/sshkey-jnmitch-rsa.pub ~/.ssh/authorized_keys/jnmitch-rsa.pub
+    # chown -R root:root ~/.ssh
+    chmod 700 ~/.ssh
+    chmod 600 ~/.ssh/authorized_keys
+
+# Modify settings [CLOSED]
+    # sed -i "s|#Port 22|Port 2424|" $SSHFILE # line 17
+    #     # If you want to change the port on a SELinux system, you have to tell SELinux about this change.
+    #     # https://docs.fedoraproject.org/en-US/Fedora/13/html/Managing_Confined_Services/sect-Managing_Confined_Services-Configuration_examples-Changing_port_numbers.html
+    #     semanage port -a -t ssh_port_t -p tcp #2424
+    # sed -i "s|#Protocol 2|Protocol 2|" $SSHFILE # line 23
+    # sed -i "s|#LoginGraceTime 2m|LoginGraceTime 60|" $SSHFILE # line 48
+    # sed -i "s|#PermitRootLogin yes|PermitRootLogin no|" $SSHFILE # line 49
+    # sed -i "s|#StrictModes yes|StrictModes yes|" $SSHFILE # line 50
+    # sed -i "s|#MaxAuthTries 6|MaxAuthTries 3|" $SSHFILE # line 51
+    # sed -i "s|#RSAAuthentication yes|RSAAuthentication yes|" $SSHFILE # line 54
+    # sed -i "s|#PubkeyAuthentication yes|PubkeyAuthentication yes|" $SSHFILE # line 55
+    # sed -i "s|AuthorizedKeysFile .ssh/authorized_keys|AuthorizedKeysFile ~/.ssh/authorized_keys|" $SSHFILE # line 59
+    # sed -i "s|#IgnoreUserKnownHosts no|IgnoreUserKnownHosts no|" $SSHFILE # line 72
+    # sed -i "s|#IgnoreRhosts yes|IgnoreRhosts yes|" $SSHFILE # line 74
+    # # delete "#PasswordAuthentication yes" # line 77 [drop line count by 1]
+    # sed -i "s|#PermitEmptyPasswords no|PermitEmptyPasswords no|" $SSHFILE # line 78 [77]
+    # sed -i "s|X11Forwarding yes|X11Forwarding no|" $SSHFILE # line 115 [114]
+    # sed -i "s|#PrintMotd yes|PrintMotd yes|" $SSHFILE # line 119 [118]
+    # sed -i "s|#UseDNS yes|#UseDNS no|" $SSHFILE # line 129 [128]
+
+# Unset variable
+    unset SSHFILE
+
+

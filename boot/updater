@@ -5,6 +5,8 @@
 
 # Change mounted file encoding
     sed -i 's/\r$//' $UPDATER/20170326
+    sed -i 's/\r$//' $UPDATER/20170327
 
 # Run install scripts
     bash $UPDATER/20170326
+    bash $UPDATER/20170327
