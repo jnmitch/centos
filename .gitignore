@@ -118,10 +118,10 @@ coverage
 # User/Custom
 ################################################
 
-# VM server setup files
-test/
-local/
-vm/
+# VM server folders
+test
+local
+vm
 
 #VS Code settings
 .vscode
