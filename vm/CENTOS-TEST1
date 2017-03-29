@@ -22,8 +22,21 @@ setup2
     └─/php
         └─php php-cli php-common php-gd php-mbstring php-mysql php-apc php-process
 
+updater
+    ├─/20170326
+    │   ├─hostname
+    │   └─static ip
+    └─/20170327
+        ├─ssh
+        └─pub key
+
 setup3
     ├─/mariadb
     │   └─mariadb-server mariadb
     └─/phpmyadmin
         └─phpmyadmin
+
+updater
+    ├─/20170328
+    │   └─phpmyadmin
+
