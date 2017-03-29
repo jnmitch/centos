@@ -27,11 +27,11 @@
     BOOTER="/mnt/github/jnmitch/centos/boot"
 
 # Change mounted file encoding
-    sed -i 's/\r$//' $BOOTER/setup2
     sed -i 's/\r$//' $BOOTER/setup3
     sed -i 's/\r$//' $BOOTER/setup1-admin
+    sed -i 's/\r$//' $BOOTER/setup2-lamp
 
 # Run install scripts
-    bash $BOOTER/setup2
     bash $BOOTER/setup3
     bash $BOOTER/setup1-admin
+    bash $BOOTER/setup2-lamp

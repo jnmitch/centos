@@ -5,20 +5,26 @@
     set -u # treat unset variables as an error when substituting
 
 # Set Variables
-    SETUP="/mnt/github/jnmitch/centos/setup"
+    LAMP="/mnt/github/jnmitch/centos/setup/lamp"
     export LOCAL="/mnt/github/jnmitch/centos/local"
     export INCLUDE="/mnt/github/jnmitch/centos/include"
     export SERVICE="/mnt/github/jnmitch/centos/service"
     export DB_ROOT_PWD=$(< $LOCAL/mysql-root-pass)
 
 # Change mounted file encoding
-    sed -i 's/\r$//' $SETUP/apache
-    sed -i 's/\r$//' $SETUP/php
+    sed -i 's/\r$//' $LAMP/apache
+    sed -i 's/\r$//' $LAMP/php
+    sed -i 's/\r$//' $LAMP/mariadb
+    sed -i 's/\r$//' $LAMP/phpmyadmin
+    # sed -i 's/\r$//' $LAMP/phppgLAMP
 
 # Run VM config scripts
-    bash $SETUP/apache
-    bash $SETUP/php
-
+    bash $LAMP/apache
+    bash $LAMP/php
+    bash $LAMP/mariadb
+    bash $LAMP/phpmyadmin
+    # bash $LAMPs/phppgLAMP
+    
 # Unset Variables
     unset SETUP
     unset LOCAL
