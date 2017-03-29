@@ -39,6 +39,8 @@
 # Accept inbound TCP packets
     # established connections
         $IPT -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+    # ssh port (default)
+        $IPT -A INPUT -p tcp -m state --state NEW --dport 22 -j ACCEPT
     # apache port
         $IPT -A INPUT -p tcp -m state --state NEW --dport 80 -j ACCEPT
     # https port

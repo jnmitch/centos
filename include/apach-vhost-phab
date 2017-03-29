@@ -1,0 +1,16 @@
+
+<VirtualHost *:40404>
+    ##### FOR PHABRICATOR #####
+    DocumentRoot /opt/phacility/phabricator/webroot
+    RewriteEngine on
+    RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
+    RewriteRule ^/favicon.ico   -                       [L,QSA]
+    RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
+    <Directory "/opt/phacility/phabricator/webroot">
+        # Order allow,deny
+        # Allow from all
+        Require all granted
+    </Directory>
+    ErrorLog /var/log/httpd/phabricator.error_log
+    CustomLog /var/log/httpd/phabricator.access_log common
+</VirtualHost>

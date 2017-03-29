@@ -1,0 +1,9 @@
+
+<VirtualHost *:60606>
+    ##### FOR PHPMYADMIN #####
+    DocumentRoot /usr/share/phpMyAdmin
+    <Directory "/usr/share/phpMyAdmin">
+        Allow from all
+        # Options +Indexes
+    </Directory>
+</VirtualHost>

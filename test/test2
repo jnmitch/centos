@@ -1,0 +1,15 @@
+#!/bin/bash
+    set -e # exit immediately if a command exits with a non-zero status
+    set -x # print commands and their arguments as they are executed
+    set -u # treat unset variables as an error when substituting
+
+LOCALFILES="/mnt/github/jnmitch/centos/local"
+
+    # mkdir ~/.ssh
+    # mkdir ~/.ssh/authorized_keys
+    cp $LOCALFILES/sshkey-jnmitch-rsa.pub ~/.ssh/authorized_keys/jnmitch-rsa.pub
+    # chown -R root:root ~/.ssh
+    # chmod 700 ~/.ssh
+    # chmod 600 ~/.ssh/authorized_keys
+
+unset LOCALFILES

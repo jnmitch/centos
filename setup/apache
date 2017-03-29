@@ -8,6 +8,13 @@
     systemctl start httpd
     systemctl enable httpd
 
+# Allow service http through firewalld (Permanent)
+    # firewall-cmd --add-service=http
+    # firewall-cmd -permanent -add-port=XXXX/tcp
+    # firewall-cmd --reload
+
+    # systemctl restart httpd
+
 # Modify the default configuration in order to enhance security:
     cp /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.orig
     # sed -i 's|^|#&|g' /etc/httpd/conf.d/welcome.conf # hides welcome page
@@ -19,7 +26,7 @@
     # sed -i "s|Options Indexes FollowSymLinks|Options FollowSymLinks|" $APACHE # line 144 (166?)
 
 # Add virtual hosts
-    cat $LOCALFILES/apache-vhosts > /etc/httpd/conf.d/vhosts.conf
+    cat $INCLUDE/apache-vhosts > /etc/httpd/conf.d/vhosts.conf
 
 # FOR TESTING
     # mkdir -p /var/www/html/example.com/{public_html,logs}

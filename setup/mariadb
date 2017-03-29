@@ -7,6 +7,10 @@
     systemctl start mariadb
     systemctl enable mariadb
 
+# Allow mysql (mariadb) through firewalld
+    # firewall-cmd --add-service=mysql
+    # firewall-cmd -permanent -add-port=XXXX/tcp
+
 # Secure MySQL
     mysql --user=root <<-EOF
       UPDATE mysql.user SET Password=PASSWORD('$DB_ROOT_PWD') WHERE User='root';
@@ -16,4 +20,3 @@
       DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
       FLUSH PRIVILEGES;
 EOF
-# ^ do not indent

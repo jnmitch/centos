@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Set variables
+    SSH="/etc/ssh/sshd_config"
+
+# Stop SSH server
+    systemctl stop sshd
+
+# Backup original file
+    cp $SSH $SSH.orig
+
+# Upload pre-configured SSH Config [OPEN]
+    \cp $INCLUDE/ssh-config-open $SSH
+
+# Create new host keys (if from a CLONE)
+    cp -r /etc/ssh /etc/ssh-orig
+    cd /etc/ssh
+    rm -f *_key*
+
+# Load remote keys
+    mkdir ~/.ssh
+    mkdir ~/.ssh/authorized_keys
+    # => Rmember to first copy/paste the one-liner OpenSSH key from PuttyGen into public key file (starting with ssh-rsa)
+    \cp $LOCAL/sshkey-jnmitch-rsa.pub ~/.ssh/authorized_keys/jnmitch-rsa.pub
+    chmod 700 ~/.ssh
+    chmod 600 ~/.ssh/authorized_keys
+
+# Start SSH server
+    systemctl start sshd
+
+# Unset variables
+    unset SSH

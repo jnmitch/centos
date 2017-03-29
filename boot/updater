@@ -1,0 +1,21 @@
+#!/bin/bash
+    set -e # exit immediately if a command exits with a non-zero status
+    set -x # print commands and their arguments as they are executed
+    set -u # treat unset variables as an error when substituting
+
+# Set variables
+    export LOCAL="/mnt/github/jnmitch/centos/local"
+    export INCLUDE="/mnt/github/jnmitch/centos/include"
+    UPDATER="/mnt/github/jnmitch/centos/update"
+
+# Change mounted file encoding
+    sed -i 's/\r$//' $UPDATER/20170326
+    sed -i 's/\r$//' $UPDATER/20170327
+
+# Run install scripts
+    bash $UPDATER/20170326
+    bash $UPDATER/20170327
+
+# Restart server
+    reboot
+    

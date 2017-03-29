@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# Set variables
+    DNS1=$(nmcli device show | grep IP4.DNS | awk '{print $2}')
+    GATEWAY=$(nmcli device show | grep IP4.DNS | awk 'NR==1{print $2}')
+    IPADDR=$(hostname -I | awk '{print $1}')
+    DEVICENAME=$(nmcli device show | grep GENERAL.DEVICE | awk 'NR==1{print $2}')
+    UUIDNEW=$(uuidgen echo "${!DEVICENAME}")
+    IFCFG="/etc/sysconfig/network-scripts/ifcfg-enp*"
+    OLD_HOSTNAME="$(hostname)"
+    NEW_HOSTNAME="$1"
+
+# Update hostname
+    if [ -z "$NEW_HOSTNAME" ]; then
+        echo -n "Please enter the new hostname: "
+        read NEW_HOSTNAME < /dev/tty
+    fi
+
+    if [ -z "$NEW_HOSTNAME" ]; then
+        echo "Error: No hostname entered. Exiting."
+        exit 1
+    fi
+
+    echo "Changing hostname from $OLD_HOSTNAME to $NEW_HOSTNAME..."
+
+    hostname "$NEW_HOSTNAME"
+
+    sed -i "s/HOSTNAME=.*/HOSTNAME=$NEW_HOSTNAME/g" /etc/sysconfig/network
+
+        if [ -n "$(grep "$OLD_HOSTNAME" /etc/hosts)" ]; then
+            sed -i "s/$OLD_HOSTNAME/$NEW_HOSTNAME/g" /etc/hosts
+        else
+            echo -e "$(hostname -I | awk '{ print $1 }')\t$NEW_HOSTNAME" >> /etc/hosts
+        fi
+
+    echo "Done."
+
+# Change network device UUID (if server was cloned)
+    # sed -i "s/UUID=.*/UUID=$UUIDNEW/" $IFCFG
+    sed -i "s/UUID=bd89ad9f-fdd0-41ab-9787-684b9fd1dd2e/UUID=$UUIDNEW/" $IFCFG # the UUID of cloned SOAR-TEST1
+
+# Static IP
+    cat $INCLUDE/network-staticip >> $IFCFG
+
+    sed -i "s/\${DNS1}/$DNS1/" $IFCFG
+    sed -i "s/\${GATEWAY}/$GATEWAY/" $IFCFG
+    sed -i "s/\${IPADDR}/$IPADDR/" $IFCFG
+
+    systemctl restart network
+
+# Unset variables
+    unset DNS1
+    unset GATEWAY
+    unset IPADDR
+    unset DEVICENAME
+    unset UUIDNEW
+    unset IFCFG
+    unset OLD_HOSTNAME
+    unset NEW_HOSTNAME

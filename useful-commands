@@ -42,8 +42,10 @@
 
 # Open/listening ports
     lsof -i -P -n | grep LISTEN
-    nmap -sT -O localhost ( or 0.0.0.0 )
-
+    nmap -sT -O localhost ( or IP )
+    nmap localhost
+    firewall-cmd --list-ports
+    
 # To change all the directories to 755 (drwxr-xr-x)
     find /opt/lampp/htdocs -type d -exec chmod 755 {} \;
 
@@ -52,6 +54,25 @@
 
 # List APC info
     php -i | grep apc
+
+# If ServerName:50505 stops working
+    # make sure hostname locations are updated, run: /update/hostname
+    service NetworkManager stop
+    systemctl restart network
+    # => wait about a minute before reloading webpage
+
+# Insert file below pointer
+    sed -i -e '/Pointer/r file1' file2
+# Insert file above pointer
+    sed -n -i -e '/Pointer/r file1' -e 1x -e '2,${x;p}' -e '${x;p}' file2 
+# If you want to match any single character use
+    sed -i 's/string-./string-0/g' file.txt
+# If you want to match any string (i.e. any single character zero or more times) use
+    sed -i 's/string-.*/string-0/g' file.txt
+
+# Network info
+    nmcli device show # everything
+    nmcli device show | grep DNS
 
 "[[ tail -n 10 /var/log/mongodb/mongod.log ]]
 [[ npm list --depth=0 ]]

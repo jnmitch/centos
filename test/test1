@@ -1,0 +1,7 @@
+#!/bin/bash
+# SETUPFILES="/mnt/github/jnmitch/centos/setup-files"
+# LOCALFILES="/mnt/github/jnmitch/centos/local-files"
+PHAB="/var/www/html/phacility"
+# DB_PHAB_PWD=$(< $LOCALFILES/password-mysql_phabricator)
+
+cd $PHAB/phabricator

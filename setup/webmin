@@ -7,7 +7,7 @@
     yum --enablerepo=extras install -y epel-release
 
 # Create Webmin Repo
-    cat $LOCALFILES/repo-webmin > /etc/yum.repos.d/webmin.repo
+    cat $INCLUDE/webmin-repo > /etc/yum.repos.d/webmin.repo
 
 # Install Webmin
     cd /tmp

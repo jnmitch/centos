@@ -1,0 +1,46 @@
+#!/bin/bash
+# TEST_VAR2="Goodnight moon."
+# echo $TEST_VAR2
+#cat $LOCALFILES/settings-network >> /etc/sysconfig/network-scripts/ifcfg-en*
+
+# working Phabricator install (done on CENTOSTST1)
+    # LOCALFILES="/mnt/github/jnmitch/centos/local-files"
+    # PHAB="/opt/phacility"
+    # DB_PHAB_PWD=$(< $LOCALFILES/password-mysql_phabricator)
+    # cd $PHAB/phabricator
+    # ./bin/config set mysql.pass $DB_PHAB_PWD
+    # ./bin/storage upgrade --force
+    # systemctl restart mariadb
+    # unset LOCALFILES
+    # unset PHAB
+    # unset DB_PHAB_PWD
+
+# cat $LOCALFILES/apache-vhosts >> /etc/httpd/conf.d/vhosts.conf
+# cat $LOCALFILES/apache-vhost_phabricator >> /etc/httpd/conf.d/vhosts.conf
+# cat $LOCALFILES/apache-vhost_phpmyadmin >> /etc/httpd/conf.d/vhosts.conf
+
+# PHAB="/var/www/html/phacility"
+
+# SERVICEFILES="/mnt/github/jnmitch/centos/service-files"
+# cd $PHAB/phabricator
+
+    # cat $SERVICEFILES/service-phabricator_phd > /lib/systemd/system/phabricator-phd.service
+    # sed -i "s|\${PHAB}|$PHAB|" /lib/systemd/system/phabricator-phd.service
+
+# Start Phabricator daemon so that it can do the required background tasks
+    # systemctl enable phabricator-phd
+    # systemctl start phabricator-phd
+    # ./bin/phd start # logs will appear in "var/tmp/phd/log/daemons.log"
+
+# chown -R apache: /var/tmp/phd/pid
+# APC="/etc/php.d/apcu.ini"
+#     cp $APC $APC.orig
+#     sed -i "s|;apc.enable_cli=0|apc.enable_cli=1|" $APC # line 9
+#     sed -i "s|;apc.shm_size=32M|apc.shm_size=1024M|" $APC # line 19
+#     sed -i "s|;apc.ttl=0|apc_ttl=72000|" $APC # line 23
+#     sed -i "s|;apc.gc_ttl=3600|apc.gc_ttl=3600|" $APC # line 27
+    # sed -i "s|;apc.user_entries_hint=4096|apc.user_entries_hint=20000|" $APC # line 39
+    	
+# echo "extension=apc.so" > /etc/php.d/apc.ini
+
+# unset APC
