@@ -1,5 +1,4 @@
 #!/bin/bash
-# CONSIDER SSH AFTER REBOOT OF SETUP1
 
     set -e # exit immediately if a command exits with a non-zero status
     set -x # print commands and their arguments as they are executed

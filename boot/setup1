@@ -30,9 +30,6 @@
 # Permanently disable SELinux
     # sed -i "s|SELINUX=enforcing|SELINUX=disabled|" /etc/sysconfig/selinux
 
-# SSH
-    # ssh -p 2424 jeff@localhost
-
 # Unset Variables
     unset SETUP
     unset LOCAL
@@ -41,5 +38,4 @@
     unset DB_ROOT_PASS
 
 # Reboot server
-    # CONSIDER SSH AFTER REBOOT OF SETUP1
     # reboot
