@@ -6,25 +6,25 @@
     set -u # treat unset variables as an error when substituting
 
 # Set Variables
-    SETUPFILES="/mnt/github/jnmitch/centos/setup"
-    export LOCALFILES="/mnt/github/jnmitch/centos/local"
+    SETUP="/mnt/github/jnmitch/centos/setup"
+    export LOCAL="/mnt/github/jnmitch/centos/local"
     export INCLUDE="/mnt/github/jnmitch/centos/include"
-    export SERVICEFILES="/mnt/github/jnmitch/centos/service"
-    export DB_ROOT_PWD=$(< $LOCALFILES/pass-mysql-root)
+    export SERVICE="/mnt/github/jnmitch/centos/service"
+    export DB_ROOT_PWD=$(< $LOCAL/mysql-root-pass)
 
 # Change mounted file encoding
-    sed -i 's/\r$//' $SETUPFILES/apache
-    sed -i 's/\r$//' $SETUPFILES/php
+    sed -i 's/\r$//' $SETUP/apache
+    sed -i 's/\r$//' $SETUP/php
 
 # Run VM config scripts
-    bash $SETUPFILES/apache
-    bash $SETUPFILES/php
+    bash $SETUP/apache
+    bash $SETUP/php
 
 # Unset Variables
-    unset SETUPFILES
-    unset LOCALFILES
+    unset SETUP
+    unset LOCAL
     unset INCLUDE
-    unset SERVICEFILES
+    unset SERVICE
     unset DB_ROOT_PWD
 
 # Reboot server
