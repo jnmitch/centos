@@ -19,7 +19,6 @@
     # sed -i "s|Deny from All|# Deny from All|g" $PMA
 
 # Modify Apache settings
-    sed -i "s|Listen 80|Listen \*:80|" $APACHE # line 42
     sed -i "/Listen \*:80/a Listen \*:60606" $APACHE # line 42
 
 # Setup virtual host

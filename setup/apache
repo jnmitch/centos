@@ -22,7 +22,8 @@
 # Backup original file
     cp $APACHE $APACHE.orig
 
-# Modify settings
+# Modify Apache settings
+    sed -i "s|Listen 80|Listen \*:80|" $APACHE # line 42
     # sed -i "s|Options Indexes FollowSymLinks|Options FollowSymLinks|" $APACHE # line 144 (166?)
 
 # Add virtual hosts
