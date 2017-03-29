@@ -7,6 +7,7 @@
 # Set Variables
     SETUP="/mnt/github/jnmitch/centos/setup"
     export LOCAL="/mnt/github/jnmitch/centos/local"
+    export INCLUDE="/mnt/github/jnmitch/centos/include"
     export SERVICE="/mnt/github/jnmitch/centos/service"
     export DB_ROOT_PWD=$(< $LOCAL/mysql-root-pass)
 
@@ -23,6 +24,7 @@
 # Unset Variables
     unset SETUP
     unset LOCAL
+    unset INCLUDE
     unset SERVICE
     unset DB_ROOT_PWD
 

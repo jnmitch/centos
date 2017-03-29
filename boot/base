@@ -2,7 +2,7 @@
 
 # Set network for DHCP
     vi /etc/sysconfig/network-scripts/ifcfg-en*
-        => ONBOOT=yes
+    # => ONBOOT=yes
     systemctl restart network
 
 # Update yum
