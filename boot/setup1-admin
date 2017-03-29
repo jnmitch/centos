@@ -5,33 +5,33 @@
     set -u # treat unset variables as an error when substituting
 
 # Set Variables
-    SETUP="/mnt/github/jnmitch/centos/setup"
+    ADMIN="/mnt/github/jnmitch/centos/setup/admin"
     export LOCAL="/mnt/github/jnmitch/centos/local"
     export INCLUDE="/mnt/github/jnmitch/centos/include"
     export SERVICE="/mnt/github/jnmitch/centos/service"
     export DB_ROOT_PASS=$(< $LOCAL/mysql-root-pass)
 
 # Change mounted file encoding
-    sed -i 's/\r$//' $SETUP/system
-    sed -i 's/\r$//' $SETUP/network
-    sed -i 's/\r$//' $SETUP/ssh
-    # sed -i 's/\r$//' $SETUP/firewalld
-    sed -i 's/\r$//' $SETUP/iptables
-    sed -i 's/\r$//' $SETUP/webmin
+    sed -i 's/\r$//' $ADMIN/system
+    sed -i 's/\r$//' $ADMIN/network
+    sed -i 's/\r$//' $ADMIN/ssh
+    # sed -i 's/\r$//' $ADMIN/firewalld
+    sed -i 's/\r$//' $ADMIN/iptables
+    sed -i 's/\r$//' $ADMIN/webmin
 
 # Run VM config scripts
-    bash $SETUP/system
-    bash $SETUP/network
-    bash $SETUP/ssh
-    # bash $SETUP/firewalld
-    bash $SETUP/iptables
-    bash $SETUP/webmin
+    bash $ADMIN/system
+    bash $ADMIN/network
+    bash $ADMIN/ssh
+    # bash $ADMIN/firewalld
+    bash $ADMIN/iptables
+    bash $ADMIN/webmin
 
 # Permanently disable SELinux
     # sed -i "s|SELINUX=enforcing|SELINUX=disabled|" /etc/sysconfig/selinux
 
 # Unset Variables
-    unset SETUP
+    unset CENTOS
     unset LOCAL
     unset INCLUDE
     unset SERVICE

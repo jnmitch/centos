@@ -28,7 +28,7 @@
     mkdir ~/.ssh
     mkdir ~/.ssh/authorized_keys
     # => Rmember to first copy/paste the one-liner OpenSSH key from PuttyGen into public key file (starting with ssh-rsa)
-    \cp $LOCALFILES/sshkey-jnmitch-rsa.pub ~/.ssh/authorized_keys/jnmitch-rsa.pub
+    \cp $LOCAL/sshkey-jnmitch-rsa.pub ~/.ssh/authorized_keys/jnmitch-rsa.pub
     chmod 700 ~/.ssh
     chmod 600 ~/.ssh/authorized_keys
 
