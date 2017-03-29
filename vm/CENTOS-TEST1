@@ -29,6 +29,8 @@ updater
         ├─ssh
         └─pub key
 
+##### SNAPSHOT: New Test VM Image #####
+
 setup3
     ├─/mariadb
     │   └─mariadb-server mariadb
@@ -36,6 +38,6 @@ setup3
         └─phpmyadmin
 
 updater
-    ├─/20170328
-    │   └─phpmyadmin
+    └─/20170328
+        └─phpmyadmin
 
