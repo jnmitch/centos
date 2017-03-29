@@ -1,33 +1,25 @@
 #!/bin/bash
-    set -e # exit immediately if a command exits with a non-zero status
-    set -x # print commands and their arguments as they are executed
-    set -u # treat unset variables as an error when substituting
 
 # Set variables
-    LOCALFILES="/mnt/github/jnmitch/centos/local"
     DNS1=$(nmcli device show | grep IP4.DNS | awk '{print $2}')
-    GATEWAY=$(route -n | grep 'UG[ \t]' | awk '{print $2}')
-    IPADDR=$(hostname -I | awk '{print $1}') 
+    GATEWAY=$(nmcli device show | grep IP4.DNS | awk 'NR==1{print $2}')
+    IPADDR=$(hostname -I | awk '{print $1}')
     DEVICENAME=$(nmcli device show | grep GENERAL.DEVICE | awk 'NR==1{print $2}')
-    # UUIDNEW=$(uuidgen echo "${!DEVICENAME}")
+    UUIDNEW=$(uuidgen echo "${!DEVICENAME}")
     IFCFG="/etc/sysconfig/network-scripts/ifcfg-enp*"
-
-# Install network tools
-    yum install -y net-tools
-
-# Update hostname
     OLD_HOSTNAME="$(hostname)"
     NEW_HOSTNAME="$1"
 
-        if [ -z "$NEW_HOSTNAME" ]; then
-            echo -n "Please enter the new hostname: "
-            read NEW_HOSTNAME < /dev/tty
-        fi
+# Update hostname
+    if [ -z "$NEW_HOSTNAME" ]; then
+        echo -n "Please enter the new hostname: "
+        read NEW_HOSTNAME < /dev/tty
+    fi
 
-        if [ -z "$NEW_HOSTNAME" ]; then
-            echo "Error: No hostname entered. Exiting."
-            exit 1
-        fi
+    if [ -z "$NEW_HOSTNAME" ]; then
+        echo "Error: No hostname entered. Exiting."
+        exit 1
+    fi
 
     echo "Changing hostname from $OLD_HOSTNAME to $NEW_HOSTNAME..."
 
@@ -43,14 +35,12 @@
 
     echo "Done."
 
-    systemctl restart network
-
 # Change network device UUID (if server was cloned)
     # sed -i "s/UUID=.*/UUID=$UUIDNEW/" $IFCFG
-    sed -i "s/UUID=bd89ad9f-fdd0-41ab-9787-684b9fd1dd2e/UUID=$UUIDNEW/" $IFCFG # the UUID of SOAR-TEST1
+    sed -i "s/UUID=bd89ad9f-fdd0-41ab-9787-684b9fd1dd2e/UUID=$UUIDNEW/" $IFCFG # the UUID of cloned SOAR-TEST1
 
 # Static IP
-    cat $LOCALFILES/network-staticip >> $IFCFG
+    cat $INCLUDE/network-staticip >> $IFCFG
 
     sed -i "s/\${DNS1}/$DNS1/" $IFCFG
     sed -i "s/\${GATEWAY}/$GATEWAY/" $IFCFG
@@ -59,10 +49,11 @@
     systemctl restart network
 
 # Unset variables
-    unset LOCALFILES
     unset DNS1
     unset GATEWAY
     unset IPADDR
     unset DEVICENAME
     unset UUIDNEW
     unset IFCFG
+    unset OLD_HOSTNAME
+    unset NEW_HOSTNAME
