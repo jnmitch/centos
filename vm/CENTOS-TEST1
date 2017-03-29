@@ -1,13 +1,12 @@
 CENTOS-TEST1
 
 base
-    ├─nano git wget bzip2 which
-    ├─gcc-c++ make kernel-devel
+    ├─nano git wget bzip2 which gcc-c++ make kernel-devel
     └─VBoxLinuxAdditions
 
 setup1
     ├─/system
-    │   └─policycoreutils-python
+    │   └─policycoreutils-python ntp
     ├─/network
     │   └─lsof nmap
     ├─/ssh
