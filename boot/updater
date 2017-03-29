@@ -6,22 +6,22 @@
 # Set variables
     export LOCAL="/mnt/github/jnmitch/centos/local"
     export INCLUDE="/mnt/github/jnmitch/centos/include"
-    UPDATER="/mnt/github/jnmitch/centos/update"
+    PATCH="/mnt/github/jnmitch/centos/patch"
 
 # Change mounted file encoding
-    # sed -i 's/\r$//' $UPDATER/20170326
-    # sed -i 's/\r$//' $UPDATER/20170327
-    sed -i 's/\r$//' $UPDATER/20170328
+    # sed -i 's/\r$//' $PATCH/20170326
+    # sed -i 's/\r$//' $PATCH/20170327
+    # sed -i 's/\r$//' $PATCH/20170328
 
 # Run install scripts
-    # bash $UPDATER/20170326
-    # bash $UPDATER/20170327
-    bash $UPDATER/20170328
+    # bash $PATCH/20170326
+    # bash $PATCH/20170327
+    # bash $PATCH/20170328
 
 # Unset variables
     unset LOCAL
     unset INCLUDE
-    unset UPDATER
+    unset PATCH
 
 # Restart server
     reboot
