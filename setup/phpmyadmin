@@ -2,6 +2,9 @@
 
 # Set variable
     PMA="/etc/httpd/conf.d/phpMyAdmin.conf"
+    HT_PMA_ROOT=$(< $LOCAL/htaccess-pma-root)
+    HT_PMA_PASS=$(< $LOCAL/htaccess-pma-pass)
+    # HT_PMA_USER=$(< $LOCAL/htaccess-pma-user)
 
 # Install phpMyAdmin
     yum install -y phpmyadmin
@@ -16,7 +19,16 @@
 # Changing the access location
     sed -i "s|Alias /phpMyAdmin /usr/share/phpMyAdmin|# Alias /phpMyAdmin /usr/share/phpMyAdmin|" $PMA
     sed -i "s|Alias /phpmyadmin /usr/share/phpMyAdmin|# Alias /phpmyadmin /usr/share/phpMyAdmin|" $PMA
-    sed -i "\|# Alias /phpmyadmin /usr/share/phpMyAdmin|a Alias /NothingToSee /usr/share/phpMyAdmin" $PMA
+    sed -i "\|# Alias /phpmyadmin /usr/share/phpMyAdmin|a Alias /mySQLadmin /usr/share/phpMyAdmin" $PMA
+
+    sed -i "\|   AddDefaultCharset UTF-8|a    AllowOverride All" $PMA
+
+# Create an .htaccess file and password
+    cat $INCLUDE/apache-htaccess-pma > /usr/share/phpMyAdmin/.htaccess
+
+# Generate user(s)/password(s)
+    htpasswd -b -c /etc/httpd/pma_pass $HT_PMA_ROOT $HT_PMA_PASS # first user
+    # htpasswd /etc/httpd/pma_pass $HT_PMA_USER # additional users
 
 # Modify Apache settings
     sed -i "/Listen \*:80/a Listen \*:60606" $APACHE # line 42
@@ -29,3 +41,6 @@
 
 # Unset variable
     unset PMA
+    unset HT_PMA_ROOT
+    unset HT_PMA_PASS
+    # unset HT_PMA_USER
