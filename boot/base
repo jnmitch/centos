@@ -29,7 +29,9 @@
 # Change mounted file encoding
     sed -i 's/\r$//' $BOOTER/setup1
     sed -i 's/\r$//' $BOOTER/setup2
+    sed -i 's/\r$//' $BOOTER/setup3
 
 # Run install scripts
     bash $BOOTER/setup1
     bash $BOOTER/setup2
+    bash $BOOTER/setup3

@@ -1,0 +1,33 @@
+#!/bin/bash
+    set -e # exit immediately if a command exits with a non-zero status
+    set -x # print commands and their arguments as they are executed
+    set -u # treat unset variables as an error when substituting
+
+# Set variables
+    PMA="/etc/httpd/conf.d/phpMyAdmin.conf"
+    HT_PMA_ROOT=$(< $LOCAL/htaccess-pma-root)
+    HT_PMA_PASS=$(< $LOCAL/htaccess-pma-pass)
+    # HT_PMA_USER=$(< $LOCAL/htaccess-pma-user)
+
+# Changing the PMA access location
+    sed -i "s|Alias /phpMyAdmin /usr/share/phpMyAdmin|# Alias /phpMyAdmin /usr/share/phpMyAdmin|" $PMA
+    sed -i "s|Alias /phpmyadmin /usr/share/phpMyAdmin|# Alias /phpmyadmin /usr/share/phpMyAdmin|" $PMA
+    sed -i "\|# Alias /phpmyadmin /usr/share/phpMyAdmin|a Alias /mySQLadmin /usr/share/phpMyAdmin" $PMA
+
+    sed -i "\|   AddDefaultCharset UTF-8|a    AllowOverride All" $PMA
+
+# Create an .htaccess file and password
+    cat $INCLUDE/apache-htaccess-pma > /usr/share/phpMyAdmin/.htaccess
+
+# Generate user(s)/password(s)
+    htpasswd -b -c /etc/httpd/pma_pass $HT_PMA_ROOT $HT_PMA_PASS # first user
+    # htpasswd /etc/httpd/pma_pass $HT_PMA_USER # additional users
+
+# Restart Apache
+    systemctl restart httpd
+
+# Unset variables
+    unset PMA
+    unset HT_PMA_ROOT
+    unset HT_PMA_PASS
+    # unset HT_PMA_USER
