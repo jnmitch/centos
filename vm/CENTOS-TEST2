@@ -1,0 +1,29 @@
+CENTOS-TEST2
+
+base
+    ├─nano git wget bzip2 which
+    ├─gcc-c++ make kernel-devel
+    └─VBoxLinuxAdditions
+
+setup1
+    ├─/system
+    │   └─policycoreutils-python
+    ├─/network
+    │   └─lsof nmap
+    ├─/ssh
+    ├─/iptables
+    │   └─iptables-services
+    └─/webmin
+        └─epel-release webmin perl-Socket6
+
+setup2
+    ├─/apache
+    │   └─httpd httpd-devel
+    └─/php
+        └─php php-cli php-common php-gd php-mbstring php-mysql php-apc php-process
+
+setup3
+    ├─/mariadb
+    │   └─mariadb-server mariadb
+    └─/phpmyadmin
+        └─phpmyadmin
