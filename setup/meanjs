@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Install MeanJS
+    git clone https://github.com/meanjs/mean.git meanjs
+    cd /meanjs
+    rm -rf node_modules/
+    npm cache clean
+    npm install
+    npm start
